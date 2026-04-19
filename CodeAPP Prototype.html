@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CodeAPP</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:ital,wght@0,400;0,500;1,400&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+body{background:#0a0a0a;font-family:'Inter',sans-serif;display:flex;justify-content:center;align-items:center;min-height:100vh}
+:root{
+  --ac:#00e5ff;--ac2:rgba(0,229,255,.14);
+  --bg:#0d1117;--s1:#161b22;--s2:#21262d;--bd:#30363d;
+  --tx:#e6edf3;--tx2:#7d8590;
+  --ok:#3fb950;--er:#f85149;--warn:#d29922;
+  --code:'JetBrains Mono',monospace;
+}
+.phone{width:393px;height:852px;background:#1c1c1e;border-radius:52px;padding:13px;
+  box-shadow:0 0 0 1px #3a3a3c,0 60px 140px rgba(0,0,0,.95),inset 0 1px 0 rgba(255,255,255,.06);
+  position:relative;flex-shrink:0}
+.screen{width:100%;height:100%;background:var(--bg);border-radius:40px;overflow:hidden;display:flex;flex-direction:column}
+.di{position:absolute;top:13px;left:50%;transform:translateX(-50%);width:118px;height:34px;background:#000;border-radius:20px;z-index:100}
+.sb{height:50px;display:flex;align-items:flex-end;justify-content:space-between;padding:0 26px 7px;flex-shrink:0;font-size:12px;font-weight:600;color:var(--tx);letter-spacing:-.3px}
+.bnav{height:78px;display:flex;align-items:flex-start;padding-top:8px;border-top:1px solid var(--bd);background:var(--s1);flex-shrink:0}
+.nb{flex:1;display:flex;flex-direction:column;align-items:center;gap:3px;cursor:pointer;padding:4px 0;user-select:none}
+.nl{font-size:10px;font-weight:500}
+.scr{flex:1;overflow-y:auto;overflow-x:hidden}
+.scr::-webkit-scrollbar{display:none}
+.card{background:var(--s1);border:1px solid var(--bd);border-radius:12px;padding:12px}
+.badge{display:inline-flex;align-items:center;gap:4px;padding:2px 7px;border-radius:5px;font-size:11px;font-weight:600}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:5px;padding:9px 18px;border-radius:10px;font-size:13px;font-weight:600;border:none;cursor:pointer;font-family:'Inter',sans-serif;transition:opacity .12s}
+.btn:active{opacity:.75}
+.bp{background:var(--ac);color:#000}
+.bg{background:var(--s2);color:var(--tx)}
+.pbar{height:3px;background:var(--s2);border-radius:2px;overflow:hidden}
+.pfill{height:100%;border-radius:2px;background:var(--ac)}
+.inp{background:var(--s2);border:1px solid var(--bd);border-radius:10px;padding:9px 13px;color:var(--tx);font-size:13px;font-family:'Inter',sans-serif;outline:none;width:100%}
+.inp:focus{border-color:var(--ac)}
+/* editor */
+.ewrap{display:flex;flex:1;overflow:hidden;background:#1e1e1e}
+.lnums{width:42px;flex-shrink:0;padding:10px 0;text-align:right;color:#4a5568;font-size:11px;font-family:var(--code);line-height:1.65;background:#1e1e1e;overflow:hidden;user-select:none}
+.carea{flex:1;position:relative;overflow:hidden}
+.cpre{position:absolute;inset:0;margin:0;padding:10px 10px 10px 4px;font-family:var(--code);line-height:1.65;white-space:pre;overflow:auto;pointer-events:none;color:#d4d4d4;border:none;background:transparent}
+.cta{position:absolute;inset:0;margin:0;padding:10px 10px 10px 4px;font-family:var(--code);line-height:1.65;white-space:pre;overflow:auto;color:transparent;caret-color:var(--ac);background:transparent;border:none;outline:none;resize:none}
+.cpre::-webkit-scrollbar,.cta::-webkit-scrollbar{display:none}
+.lnums::-webkit-scrollbar{display:none}
+.ftabs{display:flex;align-items:stretch;background:#252526;border-bottom:1px solid #3c3c3c;overflow-x:auto;flex-shrink:0;min-height:36px}
+.ftabs::-webkit-scrollbar{display:none}
+.ftab{display:flex;align-items:center;gap:5px;padding:0 12px;font-size:11.5px;font-family:var(--code);color:#7d8590;border-right:1px solid #3c3c3c;cursor:pointer;white-space:nowrap;flex-shrink:0;position:relative}
+.ftab.act{color:#d4d4d4;background:#1e1e1e}
+.ftab.act::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--ac)}
+.tabx{color:#555;font-size:13px;width:14px;height:14px;display:flex;align-items:center;justify-content:center;border-radius:3px;line-height:1}
+.tabx:hover{background:rgba(255,255,255,.12);color:#ccc}
+.cons{border-top:1px solid #3c3c3c;background:#141414;font-family:var(--code);font-size:11.5px;display:flex;flex-direction:column;flex-shrink:0}
+.chdr{display:flex;align-items:center;gap:6px;padding:5px 10px;border-bottom:1px solid #222;min-height:32px}
+.ctab{font-size:11px;padding:2px 7px;border-radius:4px;cursor:pointer;color:var(--tx2)}
+.ctab.act{background:var(--ac2);color:var(--ac)}
+.cbody{padding:8px 12px;overflow-y:auto;line-height:1.65}
+.cbody::-webkit-scrollbar{display:none}
+.runbtn{position:absolute;bottom:14px;right:14px;display:flex;align-items:center;gap:6px;padding:9px 18px;background:var(--ac);color:#000;border-radius:22px;font-size:13px;font-weight:700;font-family:'Inter',sans-serif;cursor:pointer;box-shadow:0 4px 20px rgba(0,229,255,.35);border:none;z-index:10;transition:transform .12s,box-shadow .12s}
+.runbtn:active{transform:scale(.94)}
+.runbtn:disabled{background:#333;color:#555;box-shadow:none;cursor:default}
+.dov{position:absolute;inset:0;background:rgba(0,0,0,.65);z-index:50;display:flex}
+.drw{width:268px;height:100%;background:var(--s1);border-right:1px solid var(--bd);display:flex;flex-direction:column}
+.tbar{display:flex;align-items:center;gap:8px;padding:8px 12px;background:#252526;border-bottom:1px solid #3c3c3c;flex-shrink:0}
+.sbar{display:'flex';align-items:center;padding:4px 12px;background:#007acc;font-size:11px;color:#fff;flex-shrink:0;display:flex;gap:10px}
+/* syntax */
+.kw{color:#569cd6}.str{color:#ce9178}.cmt{color:#6a9955}.num{color:#b5cea8}.typ{color:#4ec9b0}.mth{color:#dcdcaa}.ann{color:#9cdcfe}
+/* anim */
+@keyframes fadeUp{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+.fu{animation:fadeUp .18s ease}
+@keyframes spin{to{transform:rotate(360deg)}}
+.spin{animation:spin .9s linear infinite;display:inline-block}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0}}
+</style>
+</head>
+<body>
+<div id="root"></div>
+<script type="text/babel">
+const {useState,useEffect,useRef,useMemo,useCallback}=React;
+
+const TWEAK_DEFAULTS=/*EDITMODE-BEGIN*/{
+  "accent": "#00e5ff",
+  "editorSize": 12,
+  "consoleLayout": "split",
+  "density": "comfortable"
+}/*EDITMODE-END*/;
+
+// ── DATA ─────────────────────────────────────────────────────
+const CODES={
+'Main.java':`public class Main {
+    public static void main(String[] args) {
+        // Print a greeting
+        System.out.println("Hello, World!");
+
+        int[] nums = {1, 2, 3, 4, 5};
+        int sum = 0;
+
+        for (int n : nums) {
+            sum += n;
+        }
+
+        System.out.println("Sum: " + sum);
+    }
+}`,
+'Calculator.java':`public class Calculator {
+    private double memory = 0;
+
+    public double add(double a, double b) {
+        return a + b;
+    }
+
+    public double subtract(double a, double b) {
+        return a - b;
+    }
+
+    public double multiply(double a, double b) {
+        return a * b;
+    }
+
+    public static void main(String[] args) {
+        Calculator calc = new Calculator();
+        System.out.println("Add:      " + calc.add(5, 3));
+        System.out.println("Subtract: " + calc.subtract(10, 4));
+        System.out.println("Multiply: " + calc.multiply(6, 7));
+    }
+}`,
+'BubbleSort.java':`public class BubbleSort {
+    static void sort(int[] arr) {
+        int n = arr.length;
+        for (int i = 0; i < n - 1; i++) {
+            for (int j = 0; j < n - i - 1; j++) {
+                if (arr[j] > arr[j + 1]) {
+                    int temp = arr[j];
+                    arr[j] = arr[j + 1];
+                    arr[j + 1] = temp;
+                }
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] data = {64, 34, 25, 12, 22, 11, 90};
+        sort(data);
+        System.out.print("Sorted: ");
+        for (int x : data) System.out.print(x + " ");
+        System.out.println();
+    }
+}`,
+};
+const OUTPUTS={
+'Main.java':{out:'Hello, World!\nSum: 15',err:null,ms:'312ms',ok:true},
+'Calculator.java':{out:'Add:      8.0\nSubtract: 6.0\nMultiply: 42.0',err:null,ms:'284ms',ok:true},
+'BubbleSort.java':{out:'Sorted: 11 12 22 25 34 64 90 ',err:null,ms:'391ms',ok:true},
+};
+const RECENT=[
+{name:'Main.java',lang:'Java',ago:'2h ago',lines:14},
+{name:'BubbleSort.java',lang:'Java',ago:'1d ago',lines:26},
+{name:'Calculator.java',lang:'Java',ago:'3d ago',lines:24},
+{name:'LinkedList.java',lang:'Java',ago:'5d ago',lines:58},
+];
+const PACKS=[
+{id:1,name:'Java Fundamentals',tag:'Beginner',lessons:12,done:8,free:true,size:'2.1 MB',color:'#f0a500'},
+{id:2,name:'OOP Concepts',tag:'Intermediate',lessons:10,done:3,free:true,size:'1.8 MB',color:'#569cd6'},
+{id:3,name:'Data Structures',tag:'Intermediate',lessons:15,done:0,free:false,size:'3.2 MB',color:'#4ec9b0'},
+{id:4,name:'Algorithms',tag:'Advanced',lessons:20,done:0,free:false,size:'4.1 MB',color:'#ce9178'},
+];
+const LESSONS={
+1:[
+{id:11,name:'Variables & Types',done:true,theory:'In Java, every variable must have a declared type.\n\nPrimitive types: int, double, boolean, char\nReference types: String, arrays, objects\n\nVariables are strongly typed — once declared, you cannot assign a value of a different type.',starter:`public class Main {
+    public static void main(String[] args) {
+        int age = 25;
+        double gpa = 3.8;
+        boolean enrolled = true;
+        String name = "Alice";
+
+        System.out.println(name + " | age: " + age);
+        System.out.println("GPA: " + gpa);
+        System.out.println("Enrolled: " + enrolled);
+    }
+}`},
+{id:12,name:'Control Flow',done:true,theory:'Control flow determines which code executes based on conditions.\n\n• if / else if / else — conditional branches\n• switch — multi-case branching\n• Ternary: condition ? a : b',starter:`public class Main {
+    public static void main(String[] args) {
+        int score = 85;
+
+        if (score >= 90) {
+            System.out.println("Grade: A");
+        } else if (score >= 80) {
+            System.out.println("Grade: B");
+        } else if (score >= 70) {
+            System.out.println("Grade: C");
+        } else {
+            System.out.println("Grade: F");
+        }
+    }
+}`},
+{id:13,name:'Loops',done:true,theory:'Loops repeat a block of code.\n\n• for — when iterations are known\n• while — condition-based\n• do-while — runs at least once\n• Enhanced for — iterate collections',starter:`public class Main {
+    public static void main(String[] args) {
+        // for loop
+        for (int i = 1; i <= 5; i++) {
+            System.out.println("i = " + i);
+        }
+
+        // while loop
+        int n = 10;
+        while (n > 0) {
+            System.out.print(n + " ");
+            n -= 3;
+        }
+        System.out.println();
+    }
+}`},
+{id:14,name:'Methods',done:true,theory:'Methods encapsulate reusable logic. They can take parameters and return values.\n\nreturn type | method name | (parameters)',starter:`public class Main {
+    static int square(int n) {
+        return n * n;
+    }
+
+    static String greet(String name) {
+        return "Hello, " + name + "!";
+    }
+
+    public static void main(String[] args) {
+        System.out.println(square(7));
+        System.out.println(greet("Bob"));
+    }
+}`},
+{id:15,name:'Arrays',done:true,theory:'Arrays store multiple values of the same type. Index starts at 0.\n\nDeclaration: int[] arr = new int[5];\nLiteral: int[] arr = {1, 2, 3};',starter:`public class Main {
+    public static void main(String[] args) {
+        int[] scores = {92, 78, 85, 90, 88};
+        int total = 0;
+
+        for (int s : scores) {
+            total += s;
+        }
+
+        System.out.println("Total: " + total);
+        System.out.println("Avg: " + (total / scores.length));
+    }
+}`},
+{id:16,name:'Classes & Objects',done:true,theory:'A class is a blueprint; an object is an instance.\n\nFields hold state. Methods define behavior. The constructor initializes a new object.',starter:`public class Dog {
+    String name;
+    String breed;
+
+    Dog(String name, String breed) {
+        this.name = name;
+        this.breed = breed;
+    }
+
+    void bark() {
+        System.out.println(name + ": Woof!");
+    }
+
+    public static void main(String[] args) {
+        Dog d = new Dog("Rex", "Labrador");
+        d.bark();
+        System.out.println(d.breed);
+    }
+}`},
+{id:17,name:'Strings',done:true,theory:'String is a reference type with rich built-in methods.\n\nCommon methods: length(), toUpperCase(), substring(), contains(), replace(), split()',starter:`public class Main {
+    public static void main(String[] args) {
+        String s = "Hello, Java!";
+        System.out.println(s.length());
+        System.out.println(s.toUpperCase());
+        System.out.println(s.substring(7));
+        System.out.println(s.replace("Java", "World"));
+        System.out.println(s.contains("Java"));
+    }
+}`},
+{id:18,name:'Exception Handling',done:true,theory:'Exceptions are runtime errors. Use try/catch to handle them gracefully.\n\ntry { risky code }\ncatch (ExceptionType e) { handle }\nfinally { always runs }',starter:`public class Main {
+    public static void main(String[] args) {
+        try {
+            int[] arr = new int[3];
+            arr[10] = 99; // ArrayIndexOutOfBoundsException
+        } catch (ArrayIndexOutOfBoundsException e) {
+            System.out.println("Error: " + e.getMessage());
+        } finally {
+            System.out.println("Cleanup done.");
+        }
+    }
+}`},
+{id:19,name:'Interfaces',done:false,theory:'An interface defines a contract — a set of methods any implementing class must provide.\n\ninterface Shape { double area(); }\nclass Circle implements Shape { ... }',starter:`interface Shape {
+    double area();
+    default String describe() {
+        return "Shape with area " + String.format("%.2f", area());
+    }
+}
+
+class Circle implements Shape {
+    double r;
+    Circle(double r) { this.r = r; }
+    public double area() { return Math.PI * r * r; }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Shape c = new Circle(5);
+        System.out.println(c.describe());
+    }
+}`},
+{id:110,name:'Generics',done:false,theory:'Generics let you write code that works with any type while maintaining type safety.\n\nArrayList<String> holds only Strings.\nYou can define your own generic classes and methods.',starter:`import java.util.ArrayList;
+
+public class Main {
+    public static <T> void printAll(ArrayList<T> list) {
+        for (T item : list) {
+            System.out.println(item);
+        }
+    }
+
+    public static void main(String[] args) {
+        ArrayList<String> fruits = new ArrayList<>();
+        fruits.add("Apple");
+        fruits.add("Banana");
+        fruits.add("Cherry");
+        printAll(fruits);
+    }
+}`},
+{id:111,name:'Collections',done:false,theory:'The Collections Framework provides List, Set, Map, and more.\n\nHashMap<K,V> stores key→value pairs.\nArrayList<T> is a resizable array.\nLinkedList<T> for efficient insertions.',starter:`import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        Map<String, Integer> scores = new HashMap<>();
+        scores.put("Alice", 95);
+        scores.put("Bob", 87);
+        scores.put("Charlie", 92);
+
+        for (Map.Entry<String, Integer> e : scores.entrySet()) {
+            System.out.println(e.getKey() + ": " + e.getValue());
+        }
+    }
+}`},
+{id:112,name:'File I/O',done:false,theory:'Java can read and write files via java.io and java.nio.\n\nFileWriter / FileReader — character streams\nBufferedReader — efficient line reading\nFiles.readAllLines() — modern NIO approach',starter:`import java.io.*;
+
+public class Main {
+    public static void main(String[] args) throws Exception {
+        // Write
+        FileWriter fw = new FileWriter("notes.txt");
+        fw.write("Hello from Java!\\n");
+        fw.write("Line 2\\n");
+        fw.close();
+
+        // Read back
+        BufferedReader br = new BufferedReader(new FileReader("notes.txt"));
+        String line;
+        while ((line = br.readLine()) != null) {
+            System.out.println(line);
+        }
+        br.close();
+    }
+}`},
+],
+2:[
+{id:21,name:'Encapsulation',done:true,theory:'Encapsulation hides internal state and exposes only what is needed via public methods (getters/setters).',starter:`public class BankAccount {
+    private double balance;
+
+    public BankAccount(double initial) {
+        this.balance = initial;
+    }
+
+    public void deposit(double amount) {
+        if (amount > 0) balance += amount;
+    }
+
+    public void withdraw(double amount) {
+        if (amount <= balance) balance -= amount;
+    }
+
+    public double getBalance() { return balance; }
+
+    public static void main(String[] args) {
+        BankAccount acc = new BankAccount(1000);
+        acc.deposit(500);
+        acc.withdraw(200);
+        System.out.println("Balance: " + acc.getBalance());
+    }
+}`},
+{id:22,name:'Inheritance',done:true,theory:'Inheritance lets a class (subclass) inherit fields and methods from another class (superclass) using extends.',starter:`class Animal {
+    String name;
+    Animal(String name) { this.name = name; }
+    void speak() { System.out.println(name + " makes a sound."); }
+}
+
+class Dog extends Animal {
+    Dog(String name) { super(name); }
+    @Override
+    void speak() { System.out.println(name + " barks!"); }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Animal a = new Dog("Rex");
+        a.speak();
+    }
+}`},
+{id:23,name:'Polymorphism',done:true,theory:'Polymorphism allows one interface to be used for different types. Method overriding is runtime polymorphism.',starter:`class Shape {
+    double area() { return 0; }
+}
+
+class Rectangle extends Shape {
+    double w, h;
+    Rectangle(double w, double h) { this.w=w; this.h=h; }
+    double area() { return w * h; }
+}
+
+class Circle extends Shape {
+    double r;
+    Circle(double r) { this.r = r; }
+    double area() { return Math.PI * r * r; }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Shape[] shapes = { new Rectangle(4,5), new Circle(3) };
+        for (Shape s : shapes) {
+            System.out.printf("Area: %.2f%n", s.area());
+        }
+    }
+}`},
+],
+};
+const LANGPACKS=[
+{id:'py',name:'Python 3',icon:'🐍',ver:'3.11',size:'18 MB',desc:'General purpose, great for ML & data'},
+{id:'js',name:'JavaScript',icon:'🌐',ver:'Node 20',size:'12 MB',desc:'Web scripting, Node.js runtime'},
+{id:'cpp',name:'C++',icon:'⚡',ver:'GCC 13',size:'22 MB',desc:'Systems programming, high performance'},
+{id:'kt',name:'Kotlin',icon:'🎯',ver:'1.9',size:'15 MB',desc:'Modern Android development'},
+{id:'go',name:'Go',icon:'🚀',ver:'1.21',size:'14 MB',desc:'Fast compilation, built-in concurrency'},
+{id:'py2',name:'Rust',icon:'🦀',ver:'1.74',size:'19 MB',desc:'Memory-safe systems programming'},
+];
+
+// ── SYNTAX HIGHLIGHTER ───────────────────────────────────────
+const KW=new Set(['public','private','protected','class','interface','extends','implements','static','void','int','String','boolean','double','float','long','char','byte','short','new','return','if','else','for','while','do','switch','case','break','continue','try','catch','finally','throw','throws','import','package','null','true','false','this','super','final','abstract','synchronized','enum','instanceof','var','default','record']);
+function hl(code){
+  const e=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+  const ps=[
+    [/^\/\/[^\n]*/,'cmt'],[/^\/\*[\s\S]*?\*\//,'cmt'],
+    [/^"(?:[^"\\]|\\.)*"/,'str'],[/^'(?:[^'\\]|\\.)*'/,'str'],
+    [/^@[a-zA-Z]+/,'ann'],
+    [/^\d+(?:\.\d+)?[fdlL]?/,'num'],
+    [/^[a-zA-Z_$][a-zA-Z0-9_$]*/,'word'],
+    [/^[\s\S]/,null],
+  ];
+  let r='',rem=code;
+  while(rem.length){
+    for(const[re,tp]of ps){
+      const m=rem.match(re);
+      if(!m)continue;
+      const t=m[0]; rem=rem.slice(t.length);
+      if(tp==='word'){
+        const isKw=KW.has(t);
+        const isTy=/^[A-Z]/.test(t);
+        const isMeth=!isKw&&!isTy&&rem.trimStart()[0]==='(';
+        const cl=isKw?'kw':isTy?'typ':isMeth?'mth':null;
+        r+=cl?`<span class="${cl}">${e(t)}</span>`:e(t);
+      } else if(tp){r+=`<span class="${tp}">${e(t)}</span>`}
+      else r+=e(t);
+      break;
+    }
+  }
+  return r;
+}
+
+// ── ICONS ────────────────────────────────────────────────────
+const Ic=({n,s=18,c='currentColor'})=>{
+  const d={
+    home:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2"strokeLinejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>,
+    code:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2.2"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>,
+    book:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>,
+    store:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2"><path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z"/><line x1="3"y1="6"x2="21"y2="6"/><path d="M16 10a4 4 0 01-8 0"/></svg>,
+    user:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12"cy="7"r="4"/></svg>,
+    play:<svg width={s}height={s}viewBox="0 0 24 24"fill={c}><polygon points="5 3 19 12 5 21 5 3"/></svg>,
+    folder:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2"><path d="M22 19a2 2 0 01-2 2H4a2 2 0 01-2-2V5a2 2 0 012-2h5l2 3h9a2 2 0 012 2z"/></svg>,
+    file:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>,
+    term:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2"><polyline points="4 17 10 11 4 5"/><line x1="12"y1="19"x2="20"y2="19"/></svg>,
+    save:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2"><path d="M19 21H5a2 2 0 01-2-2V5a2 2 0 012-2h11l5 5v11a2 2 0 01-2 2z"/><polyline points="17 21 17 13 7 13 7 21"/><polyline points="7 3 7 8 15 8"/></svg>,
+    back:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2.2"><polyline points="15 18 9 12 15 6"/></svg>,
+    srch:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2"><circle cx="11"cy="11"r="8"/><line x1="21"y1="21"x2="16.65"y2="16.65"/></svg>,
+    chk:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2.5"><polyline points="20 6 9 17 4 12"/></svg>,
+    x:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2.5"><line x1="18"y1="6"x2="6"y2="18"/><line x1="6"y1="6"x2="18"y2="18"/></svg>,
+    dl:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12"y1="15"x2="12"y2="3"/></svg>,
+    lock:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2"><rect x="3"y="11"width="18"height="11"rx="2"ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>,
+    cog:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2"><circle cx="12"cy="12"r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-4 0v-.09A1.65 1.65 0 009 19.4a1.65 1.65 0 00-1.82.33l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 010-4h.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 014 0v.09a1.65 1.65 0 001 1.51 1.65 1.65 0 001.82-.33l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 010 4h-.09a1.65 1.65 0 00-1.51 1z"/></svg>,
+    copy:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2"><rect x="9"y="9"width="13"height="13"rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>,
+    share:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2"><circle cx="18"cy="5"r="3"/><circle cx="6"cy="12"r="3"/><circle cx="18"cy="19"r="3"/><line x1="8.59"y1="13.51"x2="15.42"y2="17.49"/><line x1="15.41"y1="6.51"x2="8.59"y2="10.49"/></svg>,
+    undo:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2"><polyline points="9 14 4 9 9 4"/><path d="M20 20v-7a4 4 0 00-4-4H4"/></svg>,
+    chev:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2"><polyline points="9 18 15 12 9 6"/></svg>,
+    bell:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 01-3.46 0"/></svg>,
+    plus:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2.5"><line x1="12"y1="5"x2="12"y2="19"/><line x1="5"y1="12"x2="19"y2="12"/></svg>,
+    wrap:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 014-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 01-4 4H3"/></svg>,
+    more:<svg width={s}height={s}viewBox="0 0 24 24"fill={c}><circle cx="12"cy="5"r="1.5"/><circle cx="12"cy="12"r="1.5"/><circle cx="12"cy="19"r="1.5"/></svg>,
+    filt:<svg width={s}height={s}viewBox="0 0 24 24"fill="none"stroke={c}strokeWidth="2"><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></svg>,
+  };
+  return d[n]||null;
+};
+
+// ── STATUS BAR ───────────────────────────────────────────────
+function StatusBar(){
+  const[t,st]=useState(()=>new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:false}));
+  useEffect(()=>{const id=setInterval(()=>st(new Date().toLocaleTimeString('en-US',{hour:'numeric',minute:'2-digit',hour12:false})),15000);return()=>clearInterval(id);},[]);
+  return(
+    <div className="sb">
+      <span>{t}</span>
+      <div style={{display:'flex',gap:5,alignItems:'center'}}>
+        <svg width="16"height="11"viewBox="0 0 16 11"fill="white"><rect x="0"y="3"width="3"height="8"rx="1"opacity=".4"/><rect x="4.5"y="2"width="3"height="9"rx="1"opacity=".6"/><rect x="9"y="1"width="3"height="10"rx="1"opacity=".85"/><rect x="13.5"y="0"width="2.5"height="11"rx="1"/></svg>
+        <svg width="15"height="11"viewBox="0 0 15 11"fill="white"><rect x="0"y="2"width="12"height="7"rx="2"stroke="white"strokeWidth="1.5"fill="none"/><rect x="13"y="4"width="2"height="3"rx="1"fill="white"opacity=".5"/><rect x="1.5"y="3.5"width="8"height="4"rx="1"fill="white"/></svg>
+      </div>
+    </div>
+  );
+}
+
+// ── BOTTOM NAV ───────────────────────────────────────────────
+function BottomNav({sc,setSc,ac}){
+  const tabs=[{id:'home',ic:'home',lb:'Home'},{id:'code',ic:'code',lb:'Code'},{id:'study',ic:'book',lb:'Study'},{id:'market',ic:'store',lb:'Market'},{id:'profile',ic:'user',lb:'Profile'}];
+  return(
+    <div className="bnav">
+      {tabs.map(t=>{
+        const on=sc===t.id;
+        return(
+          <div key={t.id}className="nb"onClick={()=>setSc(t.id)}>
+            <Ic n={t.ic}s={22}c={on?ac:'var(--tx2)'}/>
+            <span className="nl"style={{color:on?ac:'var(--tx2)'}}>{t.lb}</span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+// ── HOME ─────────────────────────────────────────────────────
+function HomeScreen({setSc,ac}){
+  return(
+    <div className="scr"style={{padding:'0 16px 16px'}}>
+      {/* header */}
+      <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'14px 0 20px'}}>
+        <div>
+          <div style={{fontSize:22,fontWeight:700,color:'var(--tx)',letterSpacing:'-.6px'}}>CodeAPP</div>
+          <div style={{fontSize:12,color:'var(--tx2)',marginTop:1}}>Welcome back 👋</div>
+        </div>
+        <div style={{display:'flex',gap:9,alignItems:'center'}}>
+          <div style={{width:34,height:34,borderRadius:10,background:'var(--s1)',border:'1px solid var(--bd)',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer'}}><Ic n="bell"s={15}c="var(--tx2)"/></div>
+          <div style={{width:34,height:34,borderRadius:'50%',background:ac+'22',border:`2px solid ${ac}`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:13,fontWeight:700,color:ac,cursor:'pointer'}}>A</div>
+        </div>
+      </div>
+      {/* quick grid */}
+      <div style={{display:'grid',gridTemplateColumns:'1fr 1fr',gap:10,marginBottom:20}}>
+        {[
+          {lb:'Playground',sub:'Free coding',ic:'code',col:ac,onClick:()=>setSc('code'),grad:true},
+          {lb:'Study Mode',sub:'8 / 12 done',ic:'book',col:'#569cd6',onClick:()=>setSc('study')},
+          {lb:'Marketplace',sub:'Browse packs',ic:'store',col:'#4ec9b0',onClick:()=>setSc('market')},
+          {lb:'My Projects',sub:'4 sessions',ic:'folder',col:'#ce9178',onClick:()=>setSc('code')},
+        ].map(({lb,sub,ic,col,onClick,grad})=>(
+          <div key={lb}onClick={onClick}style={{background:grad?`linear-gradient(135deg,${col}1a,${col}09)`:'var(--s1)',border:`1px solid ${grad?col+'33':'var(--bd)'}`,borderRadius:14,padding:'14px',cursor:'pointer'}}>
+            <div style={{width:36,height:36,borderRadius:10,background:`${col}1a`,display:'flex',alignItems:'center',justifyContent:'center',marginBottom:10}}><Ic n={ic}s={17}c={col}/></div>
+            <div style={{fontSize:13,fontWeight:600,color:'var(--tx)'}}>{lb}</div>
+            <div style={{fontSize:11,color:'var(--tx2)',marginTop:2}}>{sub}</div>
+          </div>
+        ))}
+      </div>
+      {/* active lang */}
+      <div style={{background:'var(--s1)',border:'1px solid var(--bd)',borderRadius:14,padding:'13px 14px',marginBottom:20,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+        <div style={{display:'flex',alignItems:'center',gap:12}}>
+          <div style={{width:40,height:40,borderRadius:10,background:'rgba(240,165,0,.12)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20}}>☕</div>
+          <div>
+            <div style={{fontSize:12,color:'var(--tx2)',fontWeight:500}}>Active language</div>
+            <div style={{fontSize:15,fontWeight:700,color:'var(--tx)'}}>Java</div>
+          </div>
+        </div>
+        <div style={{display:'flex',gap:6,alignItems:'center'}}>
+          <span style={{background:`${ac}1a`,color:ac,padding:'2px 8px',borderRadius:5,fontSize:11,fontWeight:600}}>Built-in</span>
+          <Ic n="chev"s={14}c="var(--tx2)"/>
+        </div>
+      </div>
+      {/* continue learning */}
+      <div style={{marginBottom:20}}>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
+          <span style={{fontSize:11,fontWeight:600,color:'var(--tx2)',letterSpacing:'.06em',textTransform:'uppercase'}}>Continue Learning</span>
+          <span onClick={()=>setSc('study')}style={{fontSize:12,color:ac,cursor:'pointer'}}>See all</span>
+        </div>
+        <div style={{background:'linear-gradient(135deg,rgba(86,156,214,.14),rgba(86,156,214,.04))',border:'1px solid rgba(86,156,214,.25)',borderRadius:14,padding:'14px'}}>
+          <div style={{display:'flex',justifyContent:'space-between',alignItems:'flex-start',marginBottom:12}}>
+            <div><div style={{fontSize:14,fontWeight:700,color:'var(--tx)'}}>Java Fundamentals</div><div style={{fontSize:12,color:'var(--tx2)',marginTop:2}}>Lesson 9 · Interfaces</div></div>
+            <button onClick={()=>setSc('study')}className="btn bp"style={{padding:'6px 14px',fontSize:12,borderRadius:8}}>Resume</button>
+          </div>
+          <div className="pbar"><div className="pfill"style={{width:'66%',background:'#569cd6'}}/></div>
+          <div style={{fontSize:11,color:'var(--tx2)',marginTop:6}}>8 of 12 lessons completed</div>
+        </div>
+      </div>
+      {/* recent sessions */}
+      <div>
+        <div style={{display:'flex',justifyContent:'space-between',alignItems:'center',marginBottom:10}}>
+          <span style={{fontSize:11,fontWeight:600,color:'var(--tx2)',letterSpacing:'.06em',textTransform:'uppercase'}}>Recent Sessions</span>
+          <span style={{fontSize:12,color:ac,cursor:'pointer'}}>See all</span>
+        </div>
+        {RECENT.map((r,i)=>(
+          <div key={i}onClick={()=>setSc('code')}style={{background:'var(--s1)',border:'1px solid var(--bd)',borderRadius:12,padding:'11px 12px',display:'flex',alignItems:'center',gap:12,cursor:'pointer',marginBottom:8}}>
+            <div style={{width:34,height:34,borderRadius:8,background:'#1e1e1e',border:'1px solid #3c3c3c',display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><Ic n="file"s={14}c={ac}/></div>
+            <div style={{flex:1,minWidth:0}}>
+              <div style={{fontSize:12.5,fontWeight:600,color:'var(--tx)',fontFamily:'var(--code)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{r.name}</div>
+              <div style={{fontSize:11,color:'var(--tx2)',marginTop:1}}>{r.lang} · {r.lines} lines · {r.ago}</div>
+            </div>
+            <Ic n="chev"s={13}c="var(--tx2)"/>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── CODE SCREEN ───────────────────────────────────────────────
+function CodeScreen({ac,editorSize,consoleLayout}){
+  const[tabs,setTabs]=useState(['Main.java','Calculator.java','BubbleSort.java']);
+  const[activeTab,setActiveTab]=useState('Main.java');
+  const[codes,setCodes]=useState(CODES);
+  const[running,setRunning]=useState(false);
+  const[output,setOutput]=useState(null);
+  const[showCons,setShowCons]=useState(true);
+  const[cTab,setCTab]=useState('output');
+  const[showDrw,setShowDrw]=useState(false);
+  const[saved,setSaved]=useState(false);
+  const taRef=useRef(),preRef=useRef(),lnRef=useRef();
+  const code=codes[activeTab]||'';
+  const setCode=v=>setCodes(p=>({...p,[activeTab]:v}));
+  const highlighted=useMemo(()=>hl(code),[code]);
+  const lc=code.split('\n').length;
+  const fs=editorSize||12;
+  const lh=fs*1.65;
+  const sync=()=>{
+    if(!taRef.current)return;
+    const{scrollTop:st,scrollLeft:sl}=taRef.current;
+    if(preRef.current){preRef.current.scrollTop=st;preRef.current.scrollLeft=sl;}
+    if(lnRef.current)lnRef.current.scrollTop=st;
+  };
+  const onKeyDown=e=>{
+    if(e.key==='Tab'){e.preventDefault();const s=e.target.selectionStart;const v=code.substring(0,s)+'    '+code.substring(e.target.selectionEnd);setCode(v);requestAnimationFrame(()=>{if(taRef.current){taRef.current.selectionStart=taRef.current.selectionEnd=s+4;}});}
+  };
+  const run=()=>{setRunning(true);setOutput(null);setShowCons(true);setTimeout(()=>{setRunning(false);setOutput(OUTPUTS[activeTab]||{out:'Program exited successfully.',err:null,ms:'500ms',ok:true});},1500+Math.random()*400);};
+  const save=()=>{setSaved(true);setTimeout(()=>setSaved(false),2000);};
+  const newFile=()=>{const nm=`New${tabs.length+1}.java`;const c=`public class New${tabs.length+1} {\n    public static void main(String[] args) {\n        \n    }\n}`;setTabs(p=>[...p,nm]);setCodes(p=>({...p,[nm]:c}));setActiveTab(nm);};
+  const closeTab=t=>{const nt=tabs.filter(x=>x!==t);setTabs(nt);if(activeTab===t&&nt.length)setActiveTab(nt[Math.max(0,tabs.indexOf(t)-1)]);};
+  const consH=consoleLayout==='sheet'?'42%':190;
+
+  return(
+    <div style={{display:'flex',flexDirection:'column',height:'100%',background:'#1e1e1e',position:'relative'}}>
+      {/* toolbar */}
+      <div className="tbar">
+        <span style={{background:'rgba(240,165,0,.14)',color:'#f0a500',padding:'2px 8px',borderRadius:5,fontSize:11,fontWeight:600,fontFamily:'var(--code)'}}>☕ Java</span>
+        <div style={{flex:1}}/>
+        {[['undo','var(--tx2)'],['save',saved?'var(--ok)':'var(--tx2)'],['copy','var(--tx2)'],['share','var(--tx2)']].map(([ic,cl])=>(
+          <div key={ic}onClick={ic==='save'?save:undefined}style={{width:28,height:28,borderRadius:6,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',background:ic==='save'&&saved?'rgba(63,185,80,.12)':'transparent'}}>
+            <Ic n={ic}s={14}c={cl}/>
+          </div>
+        ))}
+        <div onClick={()=>setShowDrw(true)}style={{width:28,height:28,borderRadius:6,display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',marginLeft:2}}>
+          <Ic n="folder"s={14}c="var(--tx2)"/>
+        </div>
+      </div>
+      {/* tabs */}
+      <div className="ftabs">
+        {tabs.map(tab=>(
+          <div key={tab}className={`ftab${activeTab===tab?' act':''}`}onClick={()=>setActiveTab(tab)}style={activeTab===tab?{borderBottomColor:ac}:{}}>
+            <Ic n="file"s={10}c={activeTab===tab?ac:'#5a6270'}/>
+            {tab}
+            <span className="tabx"onClick={e=>{e.stopPropagation();closeTab(tab);}}>×</span>
+          </div>
+        ))}
+        <div onClick={newFile}style={{display:'flex',alignItems:'center',padding:'0 12px',color:'#5a6270',cursor:'pointer',fontSize:18,lineHeight:1}}>+</div>
+      </div>
+      {/* editor */}
+      <div className="ewrap"style={{flex:1}}>
+        <div ref={lnRef}className="lnums"style={{fontSize:fs,lineHeight:`${lh}px`}}>
+          {Array.from({length:lc},(_,i)=>(
+            <div key={i}style={{height:lh,paddingRight:8,display:'flex',alignItems:'center',justifyContent:'flex-end'}}>{i+1}</div>
+          ))}
+        </div>
+        <div className="carea">
+          <pre ref={preRef}className="cpre"style={{fontSize:fs,lineHeight:`${lh}px`}}dangerouslySetInnerHTML={{__html:highlighted}}/>
+          <textarea ref={taRef}className="cta"style={{fontSize:fs,lineHeight:`${lh}px`}}value={code}onChange={e=>setCode(e.target.value)}onScroll={sync}onKeyDown={onKeyDown}spellCheck={false}autoCapitalize="none"autoCorrect="off"/>
+        </div>
+      </div>
+      {/* vscode status bar */}
+      <div className="sbar">
+        <span>☕ Java</span><span style={{opacity:.4}}>·</span>
+        <span>Ln {lc}, Col 1</span><span style={{opacity:.4}}>·</span>
+        <span>UTF-8</span>
+        <div style={{flex:1}}/>
+        {running&&<span className="spin"style={{fontSize:11}}>◌</span>}
+        {!running&&output&&<span style={{color:output.ok?'#9cdcfe':'#f1917c'}}>{output.ok?'✓ Build succeeded':'✗ Build failed'} · {output.ms}</span>}
+        <div onClick={()=>setShowCons(p=>!p)}style={{cursor:'pointer',display:'flex',alignItems:'center',gap:4,opacity:.85}}>
+          <Ic n="term"s={11}c="#fff"/>Console
+        </div>
+      </div>
+      {/* console */}
+      {showCons&&(
+        <div className="cons"style={{height:consH}}>
+          <div className="chdr">
+            {['output','problems'].map(t=>(
+              <span key={t}className={`ctab${cTab===t?' act':''}`}onClick={()=>setCTab(t)}style={{color:cTab===t?ac:'var(--tx2)',textTransform:'capitalize'}}>{t}</span>
+            ))}
+            <div style={{flex:1}}/>
+            <div onClick={run}style={{display:'flex',alignItems:'center',gap:5,cursor:'pointer',color:'var(--tx2)',fontSize:11}}>
+              <Ic n="wrap"s={11}c="var(--tx2)"/>Clear
+            </div>
+            <div onClick={()=>setShowCons(false)}style={{cursor:'pointer',color:'var(--tx2)',marginLeft:6,display:'flex',alignItems:'center'}}>
+              <Ic n="x"s={12}c="var(--tx2)"/>
+            </div>
+          </div>
+          <div className="cbody">
+            {running&&<div style={{color:'var(--tx2)',display:'flex',alignItems:'center',gap:8}}><span className="spin"style={{color:ac}}>◌</span>Compiling and running…</div>}
+            {!running&&!output&&cTab==='output'&&<div style={{color:'#3c4555',fontStyle:'italic'}}>// Press ▶ Run to execute</div>}
+            {!running&&output&&cTab==='output'&&<div style={{color:'#d4d4d4',whiteSpace:'pre-wrap'}}>{output.out}{output.err&&<span style={{color:'var(--er)',display:'block',marginTop:4}}>{output.err}</span>}</div>}
+            {cTab==='problems'&&<div style={{display:'flex',alignItems:'center',gap:6,color:output?.err?'var(--er)':'var(--ok)'}}><Ic n={output?.err?'x':'chk'}s={12}c={output?.err?'var(--er)':'var(--ok)'}/>{output?.err?'1 error detected':'No problems'}</div>}
+          </div>
+        </div>
+      )}
+      {/* run button */}
+      <button className="runbtn"onClick={run}disabled={running}style={{background:running?'#2a2a2a':ac,color:running?'#555':'#000',boxShadow:running?'none':`0 4px 20px ${ac}44`}}>
+        {running?<><span className="spin">◌</span>Running…</>:<><Ic n="play"s={12}c="#000"/>Run</>}
+      </button>
+      {/* drawer */}
+      {showDrw&&(
+        <div className="dov"onClick={()=>setShowDrw(false)}>
+          <div className="drw"onClick={e=>e.stopPropagation()}>
+            <div style={{padding:'13px 16px',borderBottom:'1px solid var(--bd)',display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+              <span style={{fontSize:13,fontWeight:600,color:'var(--tx)'}}>Explorer</span>
+              <div onClick={()=>setShowDrw(false)}style={{cursor:'pointer'}}><Ic n="x"s={14}c="var(--tx2)"/></div>
+            </div>
+            <div style={{padding:12,flex:1,overflowY:'auto'}}>
+              <div style={{fontSize:10,color:'var(--tx2)',fontWeight:700,letterSpacing:'.08em',marginBottom:8,padding:'0 4px',textTransform:'uppercase'}}>My Project</div>
+              {tabs.map(tab=>(
+                <div key={tab}onClick={()=>{setActiveTab(tab);setShowDrw(false);}}style={{display:'flex',alignItems:'center',gap:8,padding:'8px',borderRadius:8,cursor:'pointer',background:activeTab===tab?'var(--s2)':'transparent',marginBottom:2}}>
+                  <Ic n="file"s={13}c={activeTab===tab?ac:'#5a6270'}/>
+                  <span style={{fontSize:12.5,color:activeTab===tab?'var(--tx)':'var(--tx2)',fontFamily:'var(--code)',flex:1}}>{tab}</span>
+                  {activeTab===tab&&<div style={{width:6,height:6,borderRadius:'50%',background:ac}}/>}
+                </div>
+              ))}
+              <div onClick={newFile}style={{display:'flex',alignItems:'center',gap:8,padding:'8px',borderRadius:8,cursor:'pointer',border:'1px dashed var(--bd)',marginTop:8}}>
+                <Ic n="plus"s={13}c="var(--tx2)"/>
+                <span style={{fontSize:12.5,color:'var(--tx2)'}}>New file</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+
+// ── STUDY ────────────────────────────────────────────────────
+function StudyScreen({ac}){
+  const[view,setView]=useState('packs');
+  const[pack,setPack]=useState(null);
+  const[lesson,setLesson]=useState(null);
+  const[lCodes,setLCodes]=useState({});
+  const[running,setRunning]=useState(false);
+  const[out,setOut]=useState(null);
+  const[passed,setPassed]=useState({});
+  const taRef=useRef(),preRef=useRef(),lnRef=useRef();
+
+  if(view==='lesson'&&lesson){
+    const code=lCodes[lesson.id]??lesson.starter;
+    const setCode=v=>setLCodes(p=>({...p,[lesson.id]:v}));
+    const highlighted=useMemo(()=>hl(code),[code]);
+    const lc=code.split('\n').length;
+    const fs=12;const lh=fs*1.65;
+    const sync=()=>{if(!taRef.current)return;const{scrollTop:st,scrollLeft:sl}=taRef.current;if(preRef.current){preRef.current.scrollTop=st;preRef.current.scrollLeft=sl;}if(lnRef.current)lnRef.current.scrollTop=st;};
+    const onKeyDown=e=>{if(e.key==='Tab'){e.preventDefault();const s=e.target.selectionStart;const v=code.substring(0,s)+'    '+code.substring(e.target.selectionEnd);setCode(v);requestAnimationFrame(()=>{if(taRef.current){taRef.current.selectionStart=taRef.current.selectionEnd=s+4;}});}};
+    const runCode=()=>{setRunning(true);setOut(null);setTimeout(()=>{setRunning(false);setOut({txt:'Program ran successfully.',ok:true});},1300+Math.random()*400);};
+    const submit=()=>{setRunning(true);setOut(null);setTimeout(()=>{setRunning(false);setOut({txt:'✓ All test cases passed! (3/3)',ok:true});setPassed(p=>({...p,[lesson.id]:true}));},1800+Math.random()*400);};
+    const isDone=passed[lesson.id]||lesson.done;
+    const lessons=LESSONS[pack.id]||[];
+    const idx=lessons.indexOf(lesson);
+    return(
+      <div style={{display:'flex',flexDirection:'column',height:'100%',background:'#1e1e1e'}}>
+        <div style={{display:'flex',alignItems:'center',gap:10,padding:'10px 14px',background:'#252526',borderBottom:'1px solid #3c3c3c',flexShrink:0}}>
+          <div onClick={()=>{setView('lessons');setOut(null);}}style={{cursor:'pointer'}}><Ic n="back"s={18}c="var(--tx2)"/></div>
+          <div style={{flex:1}}>
+            <div style={{fontSize:13,fontWeight:600,color:'var(--tx)'}}>{lesson.name}</div>
+            <div style={{fontSize:11,color:'var(--tx2)'}}>{pack.name} · {idx+1}/{lessons.length}</div>
+          </div>
+          {isDone&&<span style={{background:'rgba(63,185,80,.15)',color:'var(--ok)',padding:'3px 8px',borderRadius:6,fontSize:11,fontWeight:600}}>✓ Done</span>}
+        </div>
+        {/* theory */}
+        <div style={{padding:'12px 14px',background:'var(--bg)',borderBottom:'1px solid var(--bd)',flexShrink:0,maxHeight:150,overflowY:'auto'}}>
+          <div style={{fontSize:10,fontWeight:700,color:'var(--tx2)',marginBottom:6,letterSpacing:'.07em',textTransform:'uppercase'}}>Theory</div>
+          <div style={{fontSize:12.5,color:'var(--tx)',lineHeight:1.65,whiteSpace:'pre-wrap'}}>{lesson.theory}</div>
+        </div>
+        <div style={{fontSize:10,padding:'5px 12px',background:'#252526',borderBottom:'1px solid #3c3c3c',color:'#5a6270',flexShrink:0,fontFamily:'var(--code)',letterSpacing:'.05em',textTransform:'uppercase',fontWeight:600}}>Your solution</div>
+        <div className="ewrap"style={{flex:1}}>
+          <div ref={lnRef}className="lnums"style={{fontSize:fs,lineHeight:`${lh}px`,overflowY:'hidden'}}>
+            {Array.from({length:lc},(_,i)=><div key={i}style={{height:lh,paddingRight:8,display:'flex',alignItems:'center',justifyContent:'flex-end'}}>{i+1}</div>)}
+          </div>
+          <div className="carea">
+            <pre ref={preRef}className="cpre"style={{fontSize:fs,lineHeight:`${lh}px`}}dangerouslySetInnerHTML={{__html:highlighted}}/>
+            <textarea ref={taRef}className="cta"style={{fontSize:fs,lineHeight:`${lh}px`}}value={code}onChange={e=>setCode(e.target.value)}onScroll={sync}onKeyDown={onKeyDown}spellCheck={false}autoCapitalize="none"autoCorrect="off"/>
+          </div>
+        </div>
+        {out&&<div style={{padding:'9px 12px',background:'#141414',borderTop:'1px solid #3c3c3c',flexShrink:0,fontFamily:'var(--code)',fontSize:11.5,color:out.ok?'var(--ok)':'var(--er)',whiteSpace:'pre-wrap'}}>{out.txt}</div>}
+        <div style={{display:'flex',gap:10,padding:'11px 12px',background:'#252526',borderTop:'1px solid #3c3c3c',flexShrink:0}}>
+          <button onClick={runCode}disabled={running}className="btn bg"style={{flex:1,fontSize:13,gap:6}}>
+            {running?<span className="spin">◌</span>:<Ic n="play"s={13}c={ac}/>}{running?'Running…':'Run'}
+          </button>
+          <button onClick={submit}disabled={running||isDone}className="btn bp"style={{flex:1,fontSize:13,background:isDone?'var(--ok)':ac,color:'#000'}}>
+            {isDone?<><Ic n="chk"s={13}c="#000"/>Passed</>:'Submit'}
+          </button>
+        </div>
+      </div>
+    );
+  }
+
+  if(view==='lessons'&&pack){
+    const lessons=LESSONS[pack.id]||[];
+    return(
+      <div style={{display:'flex',flexDirection:'column',height:'100%'}}>
+        <div style={{padding:'13px 16px',background:'var(--s1)',borderBottom:'1px solid var(--bd)',flexShrink:0}}>
+          <div style={{display:'flex',alignItems:'center',gap:10,marginBottom:14}}>
+            <div onClick={()=>setView('packs')}style={{cursor:'pointer'}}><Ic n="back"s={20}c="var(--tx2)"/></div>
+            <div style={{flex:1}}>
+              <div style={{fontSize:16,fontWeight:700,color:'var(--tx)'}}>{pack.name}</div>
+              <div style={{fontSize:12,color:'var(--tx2)',marginTop:1}}>{pack.tag} · {lessons.length} lessons</div>
+            </div>
+          </div>
+          <div className="pbar"><div className="pfill"style={{width:`${(pack.done/pack.lessons)*100}%`}}/></div>
+          <div style={{fontSize:11,color:'var(--tx2)',marginTop:5}}>{pack.done}/{pack.lessons} completed</div>
+        </div>
+        <div className="scr"style={{flex:1,padding:'12px 16px'}}>
+          {lessons.map((ls,i)=>{
+            const done=passed[ls.id]||ls.done;
+            return(
+              <div key={ls.id}onClick={()=>{setLesson(ls);setView('lesson');setOut(null);}}style={{display:'flex',alignItems:'center',gap:12,padding:'11px 12px',background:'var(--s1)',border:'1px solid var(--bd)',borderRadius:12,marginBottom:8,cursor:'pointer'}}>
+                <div style={{width:32,height:32,borderRadius:8,display:'flex',alignItems:'center',justifyContent:'center',background:done?`${ac}1a`:'var(--s2)',flexShrink:0}}>
+                  {done?<Ic n="chk"s={14}c={ac}/>:<span style={{fontSize:12,fontWeight:600,color:'var(--tx2)'}}>{i+1}</span>}
+                </div>
+                <div style={{flex:1}}>
+                  <div style={{fontSize:13,fontWeight:600,color:'var(--tx)',marginBottom:2}}>{ls.name}</div>
+                  <div style={{fontSize:11,color:'var(--tx2)'}}>{done?'Completed':'Not started'}</div>
+                </div>
+                <Ic n="chev"s={13}c="var(--tx2)"/>
+              </div>
+            );
+          })}
+        </div>
+      </div>
+    );
+  }
+
+  return(
+    <div style={{display:'flex',flexDirection:'column',height:'100%'}}>
+      <div style={{padding:'16px',background:'var(--s1)',borderBottom:'1px solid var(--bd)',flexShrink:0}}>
+        <div style={{fontSize:18,fontWeight:700,color:'var(--tx)'}}>Study Mode</div>
+        <div style={{fontSize:12,color:'var(--tx2)',marginTop:2}}>Structured lesson packs</div>
+      </div>
+      <div className="scr"style={{flex:1,padding:'16px'}}>
+        {PACKS.map(p=>(
+          <div key={p.id}onClick={()=>{if(!p.free)return;setPack(p);setView('lessons');}}style={{background:'var(--s1)',border:'1px solid var(--bd)',borderRadius:14,padding:'14px',marginBottom:12,cursor:p.free?'pointer':'default',opacity:p.free?1:.65}}>
+            <div style={{display:'flex',alignItems:'flex-start',gap:12,marginBottom:p.done>0?12:0}}>
+              <div style={{width:40,height:40,borderRadius:10,background:`${p.color}1a`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}>
+                <Ic n="book"s={18}c={p.color}/>
+              </div>
+              <div style={{flex:1}}>
+                <div style={{display:'flex',alignItems:'center',gap:8,marginBottom:5}}>
+                  <span style={{fontSize:14,fontWeight:700,color:'var(--tx)'}}>{p.name}</span>
+                  {!p.free&&<Ic n="lock"s={12}c="var(--tx2)"/>}
+                </div>
+                <div style={{display:'flex',gap:6,flexWrap:'wrap'}}>
+                  <span className="badge"style={{background:`${p.color}1a`,color:p.color}}>{p.tag}</span>
+                  <span className="badge"style={{background:'var(--s2)',color:'var(--tx2)'}}>{p.lessons} lessons</span>
+                  <span className="badge"style={{background:'var(--s2)',color:'var(--tx2)'}}>{p.size}</span>
+                </div>
+              </div>
+              <span style={{background:p.free?'rgba(63,185,80,.12)':'rgba(240,165,0,.12)',color:p.free?'var(--ok)':'#f0a500',padding:'2px 8px',borderRadius:5,fontSize:11,fontWeight:600,flexShrink:0}}>{p.free?'Free':'Premium'}</span>
+            </div>
+            {p.done>0&&(
+              <>
+                <div className="pbar"><div className="pfill"style={{width:`${(p.done/p.lessons)*100}%`}}/></div>
+                <div style={{fontSize:11,color:'var(--tx2)',marginTop:5}}>{p.done}/{p.lessons} completed</div>
+              </>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── MARKETPLACE ──────────────────────────────────────────────
+function MarketScreen({ac}){
+  const[tab,setTab]=useState('all');
+  const[inst,setInst]=useState({});
+  const[q,setQ]=useState('');
+  const tabItems=['all','language','lesson'];
+  const fLang=LANGPACKS.filter(p=>!q||p.name.toLowerCase().includes(q.toLowerCase()));
+  const fPack=PACKS.filter(p=>!q||p.name.toLowerCase().includes(q.toLowerCase()));
+  return(
+    <div style={{display:'flex',flexDirection:'column',height:'100%'}}>
+      <div style={{padding:'16px 16px 0',background:'var(--s1)',borderBottom:'1px solid var(--bd)',flexShrink:0}}>
+        <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',marginBottom:14}}>
+          <div style={{fontSize:18,fontWeight:700,color:'var(--tx)'}}>Marketplace</div>
+          <Ic n="filt"s={16}c="var(--tx2)"/>
+        </div>
+        <div style={{position:'relative',marginBottom:14}}>
+          <div style={{position:'absolute',left:11,top:'50%',transform:'translateY(-50%)'}}><Ic n="srch"s={13}c="var(--tx2)"/></div>
+          <input className="inp"placeholder="Search packs…"value={q}onChange={e=>setQ(e.target.value)}style={{paddingLeft:33,fontSize:13}}/>
+        </div>
+        <div style={{display:'flex'}}>
+          {tabItems.map(t=>(
+            <div key={t}onClick={()=>setTab(t)}style={{padding:'7px 14px',fontSize:13,fontWeight:500,color:tab===t?ac:'var(--tx2)',borderBottom:`2px solid ${tab===t?ac:'transparent'}`,cursor:'pointer',textTransform:'capitalize',marginBottom:-1}}>
+              {t==='all'?'All':t==='language'?'Language':t==='lesson'?'Lesson Packs':t}
+            </div>
+          ))}
+        </div>
+      </div>
+      <div className="scr"style={{flex:1,padding:'16px'}}>
+        {tab!=='lesson'&&(
+          <div style={{marginBottom:20}}>
+            <div style={{fontSize:11,fontWeight:600,color:'var(--tx2)',letterSpacing:'.06em',textTransform:'uppercase',marginBottom:10}}>Language Packs</div>
+            {fLang.map(p=>(
+              <div key={p.id}style={{display:'flex',alignItems:'center',gap:12,padding:'12px',background:'var(--s1)',border:'1px solid var(--bd)',borderRadius:12,marginBottom:8}}>
+                <div style={{width:40,height:40,borderRadius:10,background:'var(--s2)',display:'flex',alignItems:'center',justifyContent:'center',fontSize:20,flexShrink:0}}>{p.icon}</div>
+                <div style={{flex:1,minWidth:0}}>
+                  <div style={{fontSize:13.5,fontWeight:600,color:'var(--tx)',marginBottom:2}}>{p.name}</div>
+                  <div style={{fontSize:11,color:'var(--tx2)',overflow:'hidden',textOverflow:'ellipsis',whiteSpace:'nowrap'}}>{p.ver} · {p.size} · {p.desc}</div>
+                </div>
+                {inst[p.id]
+                  ?<span style={{background:'rgba(63,185,80,.12)',color:'var(--ok)',padding:'4px 10px',borderRadius:8,fontSize:11,fontWeight:600,flexShrink:0}}>✓ Installed</span>
+                  :<button onClick={()=>setInst(x=>({...x,[p.id]:true}))}style={{display:'flex',alignItems:'center',gap:5,padding:'5px 11px',fontSize:11,background:`${ac}16`,color:ac,border:`1px solid ${ac}33`,borderRadius:8,cursor:'pointer',fontWeight:600,fontFamily:'Inter',flexShrink:0}}>
+                    <Ic n="dl"s={11}c={ac}/>Install
+                  </button>
+                }
+              </div>
+            ))}
+          </div>
+        )}
+        {tab!=='language'&&(
+          <div>
+            <div style={{fontSize:11,fontWeight:600,color:'var(--tx2)',letterSpacing:'.06em',textTransform:'uppercase',marginBottom:10}}>Lesson Packs</div>
+            {fPack.map(p=>(
+              <div key={p.id}style={{background:'var(--s1)',border:'1px solid var(--bd)',borderRadius:12,padding:'13px',marginBottom:8}}>
+                <div style={{display:'flex',alignItems:'center',gap:12}}>
+                  <div style={{width:40,height:40,borderRadius:10,background:`${p.color}1a`,display:'flex',alignItems:'center',justifyContent:'center',flexShrink:0}}><Ic n="book"s={18}c={p.color}/></div>
+                  <div style={{flex:1,minWidth:0}}>
+                    <div style={{fontSize:13.5,fontWeight:600,color:'var(--tx)',marginBottom:3}}>{p.name}</div>
+                    <div style={{display:'flex',gap:5}}>
+                      <span className="badge"style={{background:`${p.color}1a`,color:p.color}}>{p.tag}</span>
+                      <span className="badge"style={{background:'var(--s2)',color:'var(--tx2)'}}>{p.lessons} lessons · {p.size}</span>
+                    </div>
+                  </div>
+                  {p.free
+                    ?<span style={{background:'rgba(63,185,80,.12)',color:'var(--ok)',padding:'4px 10px',borderRadius:8,fontSize:11,fontWeight:600,flexShrink:0}}>Free</span>
+                    :<button style={{display:'flex',alignItems:'center',gap:5,padding:'5px 11px',fontSize:11,background:`${ac}16`,color:ac,border:`1px solid ${ac}33`,borderRadius:8,cursor:'pointer',fontWeight:600,fontFamily:'Inter',flexShrink:0}}>
+                      <Ic n="lock"s={10}c={ac}/>Unlock
+                    </button>
+                  }
+                </div>
+              </div>
+            ))}
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
+// ── PROFILE ─────────────────────────────────────────────────
+function ProfileScreen({setSc,ac}){
+  return(
+    <div style={{display:'flex',flexDirection:'column',height:'100%'}}>
+      <div style={{padding:'16px',background:'var(--s1)',borderBottom:'1px solid var(--bd)',flexShrink:0,display:'flex',alignItems:'center',justifyContent:'space-between'}}>
+        <div style={{fontSize:18,fontWeight:700,color:'var(--tx)'}}>Profile</div>
+        <div onClick={()=>setSc('settings')}style={{cursor:'pointer',width:32,height:32,borderRadius:8,background:'var(--s2)',display:'flex',alignItems:'center',justifyContent:'center'}}>
+          <Ic n="cog"s={15}c="var(--tx2)"/>
+        </div>
+      </div>
+      <div className="scr"style={{flex:1,padding:'20px 16px'}}>
+        <div style={{display:'flex',flexDirection:'column',alignItems:'center',marginBottom:24}}>
+          <div style={{width:72,height:72,borderRadius:'50%',background:`linear-gradient(135deg,${ac}33,${ac}11)`,border:`2px solid ${ac}`,display:'flex',alignItems:'center',justifyContent:'center',fontSize:28,fontWeight:700,color:ac,marginBottom:12}}>A</div>
+          <div style={{fontSize:19,fontWeight:700,color:'var(--tx)'}}>Alex Johnson</div>
+          <div style={{fontSize:12,color:'var(--tx2)',marginTop:2}}>alex@example.com</div>
+          <span style={{marginTop:9,background:`${ac}1a`,color:ac,padding:'3px 12px',borderRadius:20,fontSize:11,fontWeight:600}}>Java Developer</span>
+        </div>
+        <div style={{display:'grid',gridTemplateColumns:'1fr 1fr 1fr',gap:10,marginBottom:24}}>
+          {[['4','Projects'],['31','Runs'],['8','Lessons']].map(([v,l])=>(
+            <div key={l}style={{background:'var(--s1)',border:'1px solid var(--bd)',borderRadius:12,padding:'12px 8px',textAlign:'center'}}>
+              <div style={{fontSize:22,fontWeight:700,color:'var(--tx)'}}>{v}</div>
+              <div style={{fontSize:10,color:'var(--tx2)',marginTop:2}}>{l}</div>
+            </div>
+          ))}
+        </div>
+        {[{title:'Account',items:['Edit Profile','Change Password','Sync Data','Manage Devices','Delete Account']},{title:'App',items:['Editor Settings','Notifications','Storage & Cache','About CodeAPP','Sign Out']}].map(({title,items})=>(
+          <div key={title}className="card"style={{marginBottom:12}}>
+            <div style={{fontSize:10,fontWeight:700,color:'var(--tx2)',marginBottom:10,letterSpacing:'.07em',textTransform:'uppercase'}}>{title}</div>
+            {items.map((item,i)=>{
+              const isRed=item==='Delete Account'||item==='Sign Out';
+              const isSettings=item==='Editor Settings';
+              return(
+                <div key={item}onClick={isSettings?()=>setSc('settings'):undefined}style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'11px 0',borderBottom:i<items.length-1?'1px solid var(--bd)':'none',cursor:isSettings?'pointer':'default'}}>
+                  <span style={{fontSize:14,color:isRed?'var(--er)':'var(--tx)',fontWeight:isRed?500:400}}>{item}</span>
+                  <Ic n="chev"s={13}c={isRed?'var(--er)':'var(--tx2)'}/>
+                </div>
+              );
+            })}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ── SETTINGS ────────────────────────────────────────────────
+function SettingsScreen({goBack,ac}){
+  const[autoSave,setAutoSave]=useState(true);
+  const[notifs,setNotifs]=useState(true);
+  const[wrap,setWrap]=useState(false);
+  const[lineNums,setLineNums]=useState(true);
+  const[fSize,setFSize]=useState(12);
+  const Toggle=({v,onChange})=>(
+    <div onClick={()=>onChange(!v)}style={{width:44,height:24,borderRadius:12,background:v?ac:'var(--s2)',padding:2,cursor:'pointer',transition:'background .18s',position:'relative',border:`1px solid ${v?ac:'var(--bd)'}`}}>
+      <div style={{width:18,height:18,borderRadius:'50%',background:'#fff',position:'absolute',top:2,left:v?22:2,transition:'left .18s'}}/>
+    </div>
+  );
+  const Row=({lb,right,border=true})=>(
+    <div style={{display:'flex',alignItems:'center',justifyContent:'space-between',padding:'12px 0',borderBottom:border?'1px solid var(--bd)':'none'}}>
+      <span style={{fontSize:14,color:'var(--tx)'}}>{lb}</span>
+      {right}
+    </div>
+  );
+  return(
+    <div style={{display:'flex',flexDirection:'column',height:'100%'}}>
+      <div style={{padding:'12px 16px',background:'var(--s1)',borderBottom:'1px solid var(--bd)',flexShrink:0,display:'flex',alignItems:'center',gap:12}}>
+        <div onClick={goBack}style={{cursor:'pointer'}}><Ic n="back"s={20}c="var(--tx2)"/></div>
+        <div style={{fontSize:16,fontWeight:700,color:'var(--tx)'}}>Settings</div>
+      </div>
+      <div className="scr"style={{flex:1,padding:'16px'}}>
+        <div className="card"style={{marginBottom:12}}>
+          <div style={{fontSize:10,fontWeight:700,color:'var(--tx2)',marginBottom:2,letterSpacing:'.07em',textTransform:'uppercase'}}>Editor</div>
+          <Row lb="Font size" right={
+            <div style={{display:'flex',alignItems:'center',gap:10}}>
+              <div onClick={()=>setFSize(p=>Math.max(10,p-1))}style={{width:28,height:28,borderRadius:6,background:'var(--s2)',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',color:'var(--tx)',fontSize:18,lineHeight:1}}>−</div>
+              <span style={{fontSize:14,fontWeight:600,color:'var(--tx)',minWidth:22,textAlign:'center',fontFamily:'var(--code)'}}>{fSize}</span>
+              <div onClick={()=>setFSize(p=>Math.min(22,p+1))}style={{width:28,height:28,borderRadius:6,background:'var(--s2)',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',color:'var(--tx)',fontSize:18,lineHeight:1}}>+</div>
+            </div>
+          }/>
+          <Row lb="Auto save" right={<Toggle v={autoSave}onChange={setAutoSave}/>}/>
+          <Row lb="Line numbers" right={<Toggle v={lineNums}onChange={setLineNums}/>}/>
+          <Row lb="Word wrap" right={<Toggle v={wrap}onChange={setWrap}/>}border={false}/>
+        </div>
+        <div className="card"style={{marginBottom:12}}>
+          <div style={{fontSize:10,fontWeight:700,color:'var(--tx2)',marginBottom:2,letterSpacing:'.07em',textTransform:'uppercase'}}>Appearance</div>
+          <Row lb="Theme" right={<span style={{fontSize:13,color:'var(--tx2)'}}>Dark (VS Code)</span>}/>
+          <div style={{padding:'12px 0',borderBottom:'1px solid var(--bd)'}}>
+            <div style={{fontSize:14,color:'var(--tx)',marginBottom:10}}>Accent color</div>
+            <div style={{display:'flex',gap:10}}>
+              {['#00e5ff','#569cd6','#4ec9b0','#c792ea','#ce9178'].map(c=>(
+                <div key={c}style={{width:28,height:28,borderRadius:'50%',background:c,cursor:'pointer',border:ac===c?'3px solid white':'3px solid transparent',outline:ac===c?`2px solid ${c}`:'none',outlineOffset:2}}/>
+              ))}
+            </div>
+          </div>
+          <Row lb="Default language" right={<span style={{fontSize:13,color:ac,fontWeight:600}}>Java</span>}border={false}/>
+        </div>
+        <div className="card">
+          <div style={{fontSize:10,fontWeight:700,color:'var(--tx2)',marginBottom:2,letterSpacing:'.07em',textTransform:'uppercase'}}>Notifications</div>
+          <Row lb="Push notifications" right={<Toggle v={notifs}onChange={setNotifs}/>}border={false}/>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── TWEAKS ───────────────────────────────────────────────────
+function TweaksPanel({tw,setTw,show}){
+  if(!show)return null;
+  return(
+    <div style={{position:'fixed',bottom:24,right:24,background:'#0d1117',border:'1px solid #30363d',borderRadius:16,padding:'16px',width:230,zIndex:2000,boxShadow:'0 12px 40px rgba(0,0,0,.7)',fontFamily:'Inter'}}>
+      <div style={{fontSize:13,fontWeight:700,color:'#e6edf3',marginBottom:14}}>Tweaks</div>
+      <div style={{marginBottom:14}}>
+        <div style={{fontSize:10,color:'#7d8590',marginBottom:8,textTransform:'uppercase',letterSpacing:'.07em',fontWeight:600}}>Accent Color</div>
+        <div style={{display:'flex',gap:8}}>
+          {['#00e5ff','#569cd6','#4ec9b0','#c792ea','#ce9178'].map(c=>(
+            <div key={c}onClick={()=>setTw(p=>({...p,accent:c}))}style={{width:26,height:26,borderRadius:'50%',background:c,cursor:'pointer',border:tw.accent===c?'3px solid white':'3px solid transparent',outline:tw.accent===c?`2px solid ${c}`:'none',outlineOffset:2}}/>
+          ))}
+        </div>
+      </div>
+      <div style={{marginBottom:14}}>
+        <div style={{fontSize:10,color:'#7d8590',marginBottom:8,textTransform:'uppercase',letterSpacing:'.07em',fontWeight:600}}>Editor Font: {tw.editorSize}px</div>
+        <div style={{display:'flex',alignItems:'center',gap:10}}>
+          <div onClick={()=>setTw(p=>({...p,editorSize:Math.max(10,p.editorSize-1)}))}style={{width:26,height:26,borderRadius:6,background:'#21262d',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',color:'#e6edf3',fontSize:16,lineHeight:1}}>−</div>
+          <div style={{flex:1,height:4,background:'#21262d',borderRadius:2}}><div style={{height:'100%',background:tw.accent,borderRadius:2,width:`${((tw.editorSize-10)/12)*100}%`}}/></div>
+          <div onClick={()=>setTw(p=>({...p,editorSize:Math.min(22,p.editorSize+1)}))}style={{width:26,height:26,borderRadius:6,background:'#21262d',display:'flex',alignItems:'center',justifyContent:'center',cursor:'pointer',color:'#e6edf3',fontSize:16,lineHeight:1}}>+</div>
+        </div>
+      </div>
+      <div>
+        <div style={{fontSize:10,color:'#7d8590',marginBottom:8,textTransform:'uppercase',letterSpacing:'.07em',fontWeight:600}}>Console Layout</div>
+        <div style={{display:'flex',gap:6}}>
+          {['split','sheet'].map(l=>(
+            <div key={l}onClick={()=>setTw(p=>({...p,consoleLayout:l}))}style={{flex:1,padding:'6px',borderRadius:8,background:tw.consoleLayout===l?`${tw.accent}16`:'#21262d',border:`1px solid ${tw.consoleLayout===l?tw.accent:'#30363d'}`,color:tw.consoleLayout===l?tw.accent:'#7d8590',fontSize:11,textAlign:'center',cursor:'pointer',fontWeight:600,textTransform:'capitalize'}}>{l}</div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+// ── APP ──────────────────────────────────────────────────────
+function App(){
+  const[sc,setSc]=useState(()=>localStorage.getItem('ca_sc')||'home');
+  const[tw,setTw]=useState(()=>{try{return JSON.parse(localStorage.getItem('ca_tw'))||TWEAK_DEFAULTS;}catch{return TWEAK_DEFAULTS;}});
+  const[showTw,setShowTw]=useState(false);
+  const prevSc=useRef(sc);
+
+  useEffect(()=>{localStorage.setItem('ca_sc',sc);},[sc]);
+  useEffect(()=>{
+    localStorage.setItem('ca_tw',JSON.stringify(tw));
+    document.documentElement.style.setProperty('--ac',tw.accent);
+    document.documentElement.style.setProperty('--ac2',tw.accent+'22');
+    window.parent.postMessage({type:'__edit_mode_set_keys',edits:tw},'*');
+  },[tw]);
+  useEffect(()=>{
+    const h=e=>{
+      if(e.data?.type==='__activate_edit_mode')setShowTw(true);
+      if(e.data?.type==='__deactivate_edit_mode')setShowTw(false);
+    };
+    window.addEventListener('message',h);
+    window.parent.postMessage({type:'__edit_mode_available'},'*');
+    return()=>window.removeEventListener('message',h);
+  },[]);
+
+  const noNav=['settings'];
+  const sp={setSc,ac:tw.accent,editorSize:tw.editorSize,consoleLayout:tw.consoleLayout};
+
+  return(
+    <div style={{display:'flex',alignItems:'center',justifyContent:'center',minHeight:'100vh',background:'#0a0a0a',padding:'20px'}}>
+      <div className="phone">
+        <div className="di"/>
+        <div className="screen">
+          <StatusBar/>
+          <div style={{flex:1,overflow:'hidden',display:'flex',flexDirection:'column',position:'relative'}}className="fu"key={sc}>
+            {sc==='home'&&<HomeScreen {...sp}/>}
+            {sc==='code'&&<CodeScreen {...sp}/>}
+            {sc==='study'&&<StudyScreen {...sp}/>}
+            {sc==='market'&&<MarketScreen {...sp}/>}
+            {sc==='profile'&&<ProfileScreen {...sp}/>}
+            {sc==='settings'&&<SettingsScreen goBack={()=>setSc('profile')}ac={tw.accent}/>}
+          </div>
+          {!noNav.includes(sc)&&<BottomNav sc={sc}setSc={setSc}ac={tw.accent}/>}
+        </div>
+      </div>
+      <TweaksPanel tw={tw}setTw={setTw}show={showTw}/>
+    </div>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App/>);
+</script>
+</body>
+</html>

@@ -1,0 +1,44 @@
+{
+  "packs": [
+    {
+      "id": "java-fundamentals",
+      "title": "Java Fundamentals",
+      "language": "java",
+      "lessonCount": 6,
+      "difficulty": "Beginner",
+      "sizeKb": 8,
+      "description": "Core Java syntax — variables, control flow, loops, methods.",
+      "builtIn": true
+    },
+    {
+      "id": "python-basics",
+      "title": "Python Basics",
+      "language": "python",
+      "lessonCount": 4,
+      "difficulty": "Beginner",
+      "sizeKb": 14,
+      "description": "Get started with Python: syntax, variables, lists, functions.",
+      "builtIn": false
+    },
+    {
+      "id": "java-oop",
+      "title": "Java OOP",
+      "language": "java",
+      "lessonCount": 4,
+      "difficulty": "Intermediate",
+      "sizeKb": 18,
+      "description": "Classes, objects, inheritance, polymorphism, encapsulation.",
+      "builtIn": false
+    },
+    {
+      "id": "javascript-essentials",
+      "title": "JavaScript Essentials",
+      "language": "javascript",
+      "lessonCount": 6,
+      "difficulty": "Beginner",
+      "sizeKb": 14,
+      "description": "Variables, functions, arrays, objects, async basics.",
+      "builtIn": false
+    }
+  ]
+}

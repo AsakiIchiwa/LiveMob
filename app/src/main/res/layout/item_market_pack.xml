@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:background="@drawable/bg_card"
+    android:padding="16dp"
+    android:layout_marginBottom="10dp">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical">
+        <TextView
+            android:id="@+id/packTitle"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/text_primary"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            tools:text="Java Fundamentals"
+            xmlns:tools="http://schemas.android.com/tools"/>
+        <TextView
+            android:id="@+id/packLanguage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/accent"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:paddingHorizontal="10dp"
+            android:paddingVertical="4dp"
+            android:background="@drawable/bg_pill_outline"
+            tools:text="JAVA"
+            xmlns:tools="http://schemas.android.com/tools"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/packDescription"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/text_secondary"
+        android:textSize="12sp"
+        android:paddingTop="6dp"
+        tools:text="Variables, control flow, loops, and methods."
+        xmlns:tools="http://schemas.android.com/tools"/>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center_vertical"
+        android:layout_marginTop="12dp">
+        <TextView
+            android:id="@+id/packMeta"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textColor="@color/text_muted"
+            android:textSize="11sp"
+            tools:text="Beginner · 6 lessons · 8 KB"
+            xmlns:tools="http://schemas.android.com/tools"/>
+        <TextView
+            android:id="@+id/packAction"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_pill_accent"
+            android:paddingHorizontal="16dp"
+            android:paddingVertical="8dp"
+            android:textColor="@color/text_on_accent"
+            android:textStyle="bold"
+            android:textSize="12sp"
+            android:clickable="true" android:focusable="true"
+            tools:text="Install"
+            xmlns:tools="http://schemas.android.com/tools"/>
+    </LinearLayout>
+</LinearLayout>

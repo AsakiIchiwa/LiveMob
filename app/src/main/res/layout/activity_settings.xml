@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_primary"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <!-- Header -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingVertical="8dp">
+            <ImageView
+                android:id="@+id/settingsBack"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_arrow_back"
+                android:padding="4dp"
+                android:clickable="true" android:focusable="true"
+                android:contentDescription="@null"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/title_settings"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginStart="8dp"/>
+        </LinearLayout>
+
+        <!-- EDITOR Section -->
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="EDITOR"
+            android:textColor="@color/text_muted" android:textSize="11sp"
+            android:textStyle="bold" android:letterSpacing="0.15"
+            android:layout_marginTop="14dp"/>
+
+        <!-- Font Size -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_card"
+            android:padding="14dp"
+            android:layout_marginTop="8dp">
+            <TextView
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Font Size"
+                android:textColor="@color/text_primary" android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/btnFontMinus"
+                android:layout_width="32dp" android:layout_height="32dp"
+                android:gravity="center"
+                android:text="−"
+                android:textColor="@color/text_primary" android:textSize="18sp"
+                android:background="@drawable/bg_circle"
+                android:clickable="true" android:focusable="true"/>
+            <TextView
+                android:id="@+id/fontSizeValue"
+                android:layout_width="40dp" android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="14"
+                android:textColor="@color/text_primary" android:textSize="14sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:id="@+id/btnFontPlus"
+                android:layout_width="32dp" android:layout_height="32dp"
+                android:gravity="center"
+                android:text="+"
+                android:textColor="@color/text_primary" android:textSize="18sp"
+                android:background="@drawable/bg_circle"
+                android:clickable="true" android:focusable="true"/>
+        </LinearLayout>
+
+        <!-- Auto Save Toggle -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_card"
+            android:padding="14dp"
+            android:layout_marginTop="8dp">
+            <TextView
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Auto Save"
+                android:textColor="@color/text_primary" android:textSize="14sp"/>
+            <Switch
+                android:id="@+id/switchAutoSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"/>
+        </LinearLayout>
+
+        <!-- Line Numbers Toggle -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_card"
+            android:padding="14dp"
+            android:layout_marginTop="8dp">
+            <TextView
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Line Numbers"
+                android:textColor="@color/text_primary" android:textSize="14sp"/>
+            <Switch
+                android:id="@+id/switchLineNumbers"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"/>
+        </LinearLayout>
+
+        <!-- Word Wrap Toggle -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_card"
+            android:padding="14dp"
+            android:layout_marginTop="8dp">
+            <TextView
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Word Wrap"
+                android:textColor="@color/text_primary" android:textSize="14sp"/>
+            <Switch
+                android:id="@+id/switchWordWrap"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="false"/>
+        </LinearLayout>
+
+        <!-- APPEARANCE Section -->
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="APPEARANCE"
+            android:textColor="@color/text_muted" android:textSize="11sp"
+            android:textStyle="bold" android:letterSpacing="0.15"
+            android:layout_marginTop="20dp"/>
+
+        <!-- Theme -->
+        <LinearLayout
+            android:id="@+id/rowTheme"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_card"
+            android:padding="14dp"
+            android:layout_marginTop="8dp"
+            android:clickable="true" android:focusable="true">
+            <TextView
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Theme"
+                android:textColor="@color/text_primary" android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/rowThemeValue"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textColor="@color/text_secondary" android:textSize="13sp"
+                android:text="Dark"/>
+            <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                android:src="@drawable/ic_chevron_right"
+                android:layout_marginStart="8dp"
+                android:contentDescription="@null"/>
+        </LinearLayout>
+
+        <!-- Accent Color Picker -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card"
+            android:padding="14dp"
+            android:layout_marginTop="8dp">
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Accent Color"
+                android:textColor="@color/text_primary" android:textSize="14sp"/>
+            <LinearLayout
+                android:id="@+id/accentColorRow"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginTop="10dp"
+                android:gravity="center_vertical">
+                <View android:id="@+id/colorBlue"
+                    android:layout_width="32dp" android:layout_height="32dp"
+                    android:background="@drawable/bg_circle_accent"
+                    android:layout_marginEnd="12dp"/>
+                <View android:id="@+id/colorPurple"
+                    android:layout_width="32dp" android:layout_height="32dp"
+                    android:background="@drawable/bg_circle"
+                    android:layout_marginEnd="12dp"/>
+                <View android:id="@+id/colorGreen"
+                    android:layout_width="32dp" android:layout_height="32dp"
+                    android:background="@drawable/bg_circle"
+                    android:layout_marginEnd="12dp"/>
+                <View android:id="@+id/colorOrange"
+                    android:layout_width="32dp" android:layout_height="32dp"
+                    android:background="@drawable/bg_circle"
+                    android:layout_marginEnd="12dp"/>
+                <View android:id="@+id/colorRed"
+                    android:layout_width="32dp" android:layout_height="32dp"
+                    android:background="@drawable/bg_circle"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <!-- Default Language -->
+        <LinearLayout
+            android:id="@+id/rowDefaultLang"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_card"
+            android:padding="14dp"
+            android:layout_marginTop="8dp"
+            android:clickable="true" android:focusable="true">
+            <TextView
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Default Language"
+                android:textColor="@color/text_primary" android:textSize="14sp"/>
+            <TextView
+                android:id="@+id/rowDefaultLangValue"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:textColor="@color/text_secondary" android:textSize="13sp"
+                android:text="Java"/>
+            <ImageView android:layout_width="20dp" android:layout_height="20dp"
+                android:src="@drawable/ic_chevron_right"
+                android:layout_marginStart="8dp"
+                android:contentDescription="@null"/>
+        </LinearLayout>
+
+        <!-- NOTIFICATIONS Section -->
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="NOTIFICATIONS"
+            android:textColor="@color/text_muted" android:textSize="11sp"
+            android:textStyle="bold" android:letterSpacing="0.15"
+            android:layout_marginTop="20dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_card"
+            android:padding="14dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp">
+            <TextView
+                android:layout_width="0dp" android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="Push Notifications"
+                android:textColor="@color/text_primary" android:textSize="14sp"/>
+            <Switch
+                android:id="@+id/switchNotifications"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:checked="true"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>

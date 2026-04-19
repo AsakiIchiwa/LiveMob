@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:padding="14dp"
+    android:layout_marginBottom="10dp"
+    android:background="@drawable/bg_card_alt"
+    android:clickable="true"
+    android:focusable="true"
+    android:id="@+id/lessonRoot">
+
+    <TextView
+        android:id="@+id/lessonIndex"
+        android:layout_width="36dp"
+        android:layout_height="36dp"
+        android:background="@drawable/bg_circle"
+        android:gravity="center"
+        android:textColor="@color/text_primary"
+        android:textStyle="bold"
+        android:textSize="13sp"
+        tools:text="01"
+        xmlns:tools="http://schemas.android.com/tools"/>
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:orientation="vertical"
+        android:layout_marginStart="12dp">
+        <TextView
+            android:id="@+id/lessonTitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_primary"
+            android:textSize="14sp"
+            android:textStyle="bold"
+            tools:text="Intro to Java"
+            xmlns:tools="http://schemas.android.com/tools"/>
+        <TextView
+            android:id="@+id/lessonSubtitle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_secondary"
+            android:textSize="12sp"
+            android:paddingTop="2dp"
+            tools:text="Setup · syntax · first program"
+            xmlns:tools="http://schemas.android.com/tools"/>
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/lessonStatus"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/accent"
+        android:textSize="11sp"
+        android:textStyle="bold"
+        tools:text="Done"
+        xmlns:tools="http://schemas.android.com/tools"/>
+</LinearLayout>

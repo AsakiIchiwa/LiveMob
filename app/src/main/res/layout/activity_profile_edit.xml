@@ -1,0 +1,163 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_primary"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="16dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_vertical"
+            android:paddingVertical="8dp">
+            <ImageView
+                android:id="@+id/editBack"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
+                android:src="@drawable/ic_arrow_back"
+                android:padding="4dp"
+                android:clickable="true" android:focusable="true"
+                android:contentDescription="@null"/>
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:text="@string/title_edit_profile"
+                android:textColor="@color/text_primary"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:layout_marginStart="8dp"/>
+            <TextView
+                android:id="@+id/editSave"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/action_save"
+                android:textColor="@color/text_on_accent"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:paddingHorizontal="16dp"
+                android:paddingVertical="8dp"
+                android:background="@drawable/bg_pill_accent"
+                android:clickable="true" android:focusable="true"/>
+        </LinearLayout>
+
+        <!-- Avatar picker -->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:background="@drawable/bg_card"
+            android:padding="20dp"
+            android:layout_marginTop="12dp">
+            <ImageView
+                android:id="@+id/editAvatarPreview"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:src="@drawable/ic_avatar"
+                android:background="@drawable/bg_circle"
+                android:padding="12dp"
+                android:contentDescription="@null"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pick an avatar style"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"
+                android:paddingTop="10dp"/>
+            <LinearLayout
+                android:id="@+id/avatarPicker"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingTop="10dp">
+                <!-- 5 small avatar swatches injected programmatically -->
+            </LinearLayout>
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/profile_name_hint"
+            android:textColor="@color/text_muted"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.15"
+            android:layout_marginTop="20dp"/>
+
+        <EditText
+            android:id="@+id/editName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_input"
+            android:padding="14dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_muted"
+            android:textSize="14sp"
+            android:layout_marginTop="6dp"
+            android:inputType="textPersonName"
+            android:maxLength="40"
+            android:hint="Display name"
+            android:importantForAutofill="no"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/profile_handle_hint"
+            android:textColor="@color/text_muted"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.15"
+            android:layout_marginTop="14dp"/>
+
+        <EditText
+            android:id="@+id/editHandle"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_input"
+            android:padding="14dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_muted"
+            android:textSize="14sp"
+            android:layout_marginTop="6dp"
+            android:inputType="text"
+            android:maxLength="20"
+            android:hint="@coder"
+            android:importantForAutofill="no"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/profile_bio_hint"
+            android:textColor="@color/text_muted"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.15"
+            android:layout_marginTop="14dp"/>
+
+        <EditText
+            android:id="@+id/editBio"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bg_input"
+            android:padding="14dp"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_muted"
+            android:textSize="14sp"
+            android:layout_marginTop="6dp"
+            android:minHeight="80dp"
+            android:gravity="start|top"
+            android:inputType="textMultiLine|textCapSentences"
+            android:maxLines="4"
+            android:maxLength="160"
+            android:hint="A few words about you"
+            android:importantForAutofill="no"/>
+    </LinearLayout>
+</ScrollView>

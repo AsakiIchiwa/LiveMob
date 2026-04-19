@@ -1,0 +1,71 @@
+{
+  "id": "javascript-essentials",
+  "title": "JavaScript Essentials",
+  "description": "Variables, functions, arrays, objects, async basics.",
+  "language": "javascript",
+  "difficulty": "Beginner",
+  "sizeKb": 14,
+  "builtIn": false,
+  "lessons": [
+    {
+      "index": 1,
+      "title": "Hello JavaScript",
+      "subtitle": "console.log",
+      "starterCode": "// TODO: log 'Hello, JS!'\n",
+      "task": "Print \"Hello, JS!\" to the console.",
+      "hint": "console.log(\"Hello, JS!\");",
+      "expectedOutput": "Hello, JS!\n",
+      "xpReward": 50
+    },
+    {
+      "index": 2,
+      "title": "let and const",
+      "subtitle": "Modern variable declaration",
+      "starterCode": "// TODO: declare const PI = 3.14 and log it\n",
+      "task": "Declare a constant PI with value 3.14 and log it.",
+      "hint": "const PI = 3.14;\\nconsole.log(PI);",
+      "expectedOutput": "3.14\n",
+      "xpReward": 75
+    },
+    {
+      "index": 3,
+      "title": "Arrays",
+      "subtitle": "Push, map, reduce",
+      "starterCode": "const nums = [1, 2, 3, 4, 5];\n// TODO: log the sum\n",
+      "task": "Print the sum of the nums array.",
+      "hint": "nums.reduce((a, b) => a + b, 0)",
+      "expectedOutput": "15\n",
+      "xpReward": 100
+    },
+    {
+      "index": 4,
+      "title": "Functions",
+      "subtitle": "Arrow functions and parameters",
+      "starterCode": "// TODO: define square = (n) => n * n\n\nconsole.log(square(8));\n",
+      "task": "Define an arrow function square that returns n*n. The program should print 64.",
+      "hint": "const square = n => n * n;",
+      "expectedOutput": "64\n",
+      "xpReward": 120
+    },
+    {
+      "index": 5,
+      "title": "Objects",
+      "subtitle": "Key-value pairs",
+      "starterCode": "const user = { name: \"Alex\", level: 7 };\n// TODO: print 'Alex - Level 7'\n",
+      "task": "Print 'Alex - Level 7' using the user object's properties.",
+      "hint": "Use template literals: `${user.name} - Level ${user.level}`",
+      "expectedOutput": "Alex - Level 7\n",
+      "xpReward": 150
+    },
+    {
+      "index": 6,
+      "title": "Async basics",
+      "subtitle": "Promises and await",
+      "starterCode": "async function main() {\n    const v = await Promise.resolve(42);\n    // TODO: log v\n}\nmain();\n",
+      "task": "Log the awaited promise value (should print 42).",
+      "hint": "console.log(v);",
+      "expectedOutput": "42\n",
+      "xpReward": 180
+    }
+  ]
+}

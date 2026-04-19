@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- CodeAPP Prototype Colors -->
+    <color name="bg_primary">#0D1117</color>
+    <color name="bg_surface">#161B22</color>
+    <color name="bg_surface_alt">#21262D</color>
+    <color name="bg_elevated">#30363D</color>
+    <color name="bg_editor">#1E1E1E</color>
+    <color name="bg_nav">#161B22</color>
+
+    <color name="accent">#00E5FF</color>
+    <color name="accent_dark">#00B8CC</color>
+    <color name="accent_translucent">#2400E5FF</color>
+
+    <color name="text_primary">#E6EDF3</color>
+    <color name="text_secondary">#7D8590</color>
+    <color name="text_muted">#484F58</color>
+    <color name="text_on_accent">#000000</color>
+
+    <color name="success">#3FB950</color>
+    <color name="error">#F85149</color>
+    <color name="warning">#D29922</color>
+
+    <color name="divider">#30363D</color>
+    <color name="white">#FFFFFF</color>
+    <color name="black">#000000</color>
+
+    <!-- Syntax Highlighting -->
+    <color name="syntax_keyword">#569CD6</color>
+    <color name="syntax_string">#CE9178</color>
+    <color name="syntax_comment">#6A9955</color>
+    <color name="syntax_number">#B5CEA8</color>
+    <color name="syntax_type">#4EC9B0</color>
+    <color name="syntax_method">#DCDCAA</color>
+    <color name="syntax_annotation">#9CDCFE</color>
+</resources>

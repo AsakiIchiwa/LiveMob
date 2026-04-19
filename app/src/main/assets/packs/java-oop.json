@@ -1,0 +1,51 @@
+{
+  "id": "java-oop",
+  "title": "Java OOP",
+  "description": "Classes, objects, inheritance, polymorphism, encapsulation.",
+  "language": "java",
+  "difficulty": "Intermediate",
+  "sizeKb": 18,
+  "builtIn": false,
+  "lessons": [
+    {
+      "index": 1,
+      "title": "Classes & Objects",
+      "subtitle": "Defining your first class",
+      "starterCode": "class Point {\n    int x, y;\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Point p = new Point();\n        p.x = 3;\n        p.y = 4;\n        // TODO: print the point as \"3,4\"\n    }\n}\n",
+      "task": "Print the Point as \"3,4\" using its x and y fields.",
+      "hint": "System.out.println(p.x + \",\" + p.y);",
+      "expectedOutput": "3,4\n",
+      "xpReward": 120
+    },
+    {
+      "index": 2,
+      "title": "Constructors",
+      "subtitle": "Initializing objects",
+      "starterCode": "class Point {\n    int x, y;\n    // TODO: add a constructor Point(int x, int y)\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Point p = new Point(7, 2);\n        System.out.println(p.x + \",\" + p.y);\n    }\n}\n",
+      "task": "Add a Point(int x, int y) constructor so the program prints 7,2.",
+      "hint": "Point(int x, int y) { this.x = x; this.y = y; }",
+      "expectedOutput": "7,2\n",
+      "xpReward": 150
+    },
+    {
+      "index": 3,
+      "title": "Methods on Classes",
+      "subtitle": "Behavior lives with data",
+      "starterCode": "class Point {\n    int x, y;\n    Point(int x, int y) { this.x = x; this.y = y; }\n    // TODO: add double distanceFromOrigin() returning sqrt(x*x+y*y)\n}\n\npublic class Main {\n    public static void main(String[] args) {\n        Point p = new Point(3, 4);\n        System.out.println((int) p.distanceFromOrigin());\n    }\n}\n",
+      "task": "Implement distanceFromOrigin() so the program prints 5.",
+      "hint": "Math.sqrt(x*x + y*y)",
+      "expectedOutput": "5\n",
+      "xpReward": 180
+    },
+    {
+      "index": 4,
+      "title": "Inheritance",
+      "subtitle": "extends and super",
+      "starterCode": "class Animal {\n    String speak() { return \"...\"; }\n}\n// TODO: make a Dog class that extends Animal and returns \"Woof\"\n\npublic class Main {\n    public static void main(String[] args) {\n        Animal a = new Dog();\n        System.out.println(a.speak());\n    }\n}\n",
+      "task": "Create class Dog extends Animal and override speak() to return \"Woof\".",
+      "hint": "class Dog extends Animal { @Override String speak() { return \"Woof\"; } }",
+      "expectedOutput": "Woof\n",
+      "xpReward": 200
+    }
+  ]
+}

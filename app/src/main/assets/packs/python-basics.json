@@ -1,0 +1,51 @@
+{
+  "id": "python-basics",
+  "title": "Python Basics",
+  "description": "Get started with Python: syntax, variables, lists, functions.",
+  "language": "python",
+  "difficulty": "Beginner",
+  "sizeKb": 14,
+  "builtIn": false,
+  "lessons": [
+    {
+      "index": 1,
+      "title": "Hello Python",
+      "subtitle": "Your first print",
+      "starterCode": "# TODO: print 'Hello, Python!'\n",
+      "task": "Print \"Hello, Python!\" to the console.",
+      "hint": "Use print() function.",
+      "expectedOutput": "Hello, Python!\n",
+      "xpReward": 50
+    },
+    {
+      "index": 2,
+      "title": "Variables",
+      "subtitle": "Dynamic typing",
+      "starterCode": "# TODO: assign 42 to answer and print it\n",
+      "task": "Assign the integer 42 to a variable named answer and print it.",
+      "hint": "answer = 42\\nprint(answer)",
+      "expectedOutput": "42\n",
+      "xpReward": 80
+    },
+    {
+      "index": 3,
+      "title": "Lists",
+      "subtitle": "Ordered collections",
+      "starterCode": "nums = [1, 2, 3, 4, 5]\n# TODO: print the sum of nums\n",
+      "task": "Print the sum of the elements in the nums list.",
+      "hint": "Use the built-in sum() function.",
+      "expectedOutput": "15\n",
+      "xpReward": 100
+    },
+    {
+      "index": 4,
+      "title": "Functions",
+      "subtitle": "def keyword",
+      "starterCode": "# TODO: define square(x) that returns x*x\n\nprint(square(6))\n",
+      "task": "Define a function square(x) that returns x*x. The program should print 36.",
+      "hint": "def square(x):\\n    return x * x",
+      "expectedOutput": "36\n",
+      "xpReward": 120
+    }
+  ]
+}

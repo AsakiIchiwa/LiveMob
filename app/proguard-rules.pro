@@ -1,0 +1,5 @@
+-keepattributes Signature, InnerClasses, EnclosingMethod, *Annotation*
+-keepclassmembers,allowshrinking,allowobfuscation interface * { @retrofit2.http.* <methods>; }
+-dontwarn retrofit2.**
+-dontwarn okio.**
+-keep class com.codelab.app.api.** { *; }

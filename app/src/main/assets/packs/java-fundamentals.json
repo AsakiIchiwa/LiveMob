@@ -1,0 +1,71 @@
+{
+  "id": "java-fundamentals",
+  "title": "Java Fundamentals",
+  "description": "Core Java syntax — variables, control flow, loops, methods.",
+  "language": "java",
+  "difficulty": "Beginner",
+  "sizeKb": 8,
+  "builtIn": true,
+  "lessons": [
+    {
+      "index": 1,
+      "title": "Intro to Java",
+      "subtitle": "Setup, syntax, first program",
+      "starterCode": "public class Main {\n    public static void main(String[] args) {\n        System.out.println(\"Hello, Java!\");\n    }\n}\n",
+      "task": "Print \"Hello, Java!\" to the console using System.out.println().",
+      "hint": "The println() method prints a line of text followed by a newline.",
+      "expectedOutput": "Hello, Java!\n",
+      "xpReward": 50
+    },
+    {
+      "index": 2,
+      "title": "Variables & Data Types",
+      "subtitle": "int, String, boolean, casting",
+      "starterCode": "public class Main {\n    public static void main(String[] args) {\n        // Declare an int named score and assign 100, then print it\n        \n    }\n}\n",
+      "task": "Declare an integer variable named score and assign it the value 100. Then print it using System.out.println().",
+      "hint": "int score = 100;\\nSystem.out.println(score);",
+      "expectedOutput": "100\n",
+      "xpReward": 75
+    },
+    {
+      "index": 3,
+      "title": "Operators",
+      "subtitle": "Arithmetic, comparison, logical",
+      "starterCode": "public class Main {\n    public static void main(String[] args) {\n        int a = 7, b = 3;\n        // print the sum\n        \n    }\n}\n",
+      "task": "Compute and print the sum of a=7 and b=3.",
+      "hint": "Use the + operator: a + b",
+      "expectedOutput": "10\n",
+      "xpReward": 75
+    },
+    {
+      "index": 4,
+      "title": "Control Flow",
+      "subtitle": "if, else, switch statements",
+      "starterCode": "public class Main {\n    public static void main(String[] args) {\n        int n = 4;\n        // print \"even\" or \"odd\"\n        \n    }\n}\n",
+      "task": "Print \"even\" if n is divisible by 2, otherwise print \"odd\".",
+      "hint": "Use the modulo operator: n % 2 == 0",
+      "expectedOutput": "even\n",
+      "xpReward": 100
+    },
+    {
+      "index": 5,
+      "title": "Loops & Iteration",
+      "subtitle": "for, while, do-while",
+      "starterCode": "public class Main {\n    public static void main(String[] args) {\n        // Print numbers 1 to 5\n        \n    }\n}\n",
+      "task": "Print the numbers 1 to 5, one per line, using a for loop.",
+      "hint": "for (int i = 1; i <= 5; i++) { System.out.println(i); }",
+      "expectedOutput": "1\n2\n3\n4\n5\n",
+      "xpReward": 120
+    },
+    {
+      "index": 6,
+      "title": "Methods",
+      "subtitle": "Defining and calling functions",
+      "starterCode": "public class Main {\n    static int square(int n) {\n        // return n squared\n        return 0;\n    }\n    public static void main(String[] args) {\n        System.out.println(square(6));\n    }\n}\n",
+      "task": "Implement the square method to return n * n.",
+      "hint": "return n * n;",
+      "expectedOutput": "36\n",
+      "xpReward": 150
+    }
+  ]
+}
