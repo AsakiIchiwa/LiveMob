@@ -265,8 +265,7 @@
             android:gravity="center_vertical"
             android:background="@drawable/bg_card"
             android:padding="14dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginBottom="24dp">
+            android:layout_marginTop="8dp">
             <TextView
                 android:layout_width="0dp" android:layout_height="wrap_content"
                 android:layout_weight="1"
@@ -278,5 +277,23 @@
                 android:layout_height="wrap_content"
                 android:checked="true"/>
         </LinearLayout>
+
+        <!-- ACCOUNT Section -->
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="ACCOUNT"
+            android:textColor="@color/text_muted" android:textSize="11sp"
+            android:textStyle="bold" android:letterSpacing="0.15"
+            android:layout_marginTop="20dp"/>
+
+        <Button
+            android:id="@+id/btnLogout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Log Out"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"/>
     </LinearLayout>
 </ScrollView>

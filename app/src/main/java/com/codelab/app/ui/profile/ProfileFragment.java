@@ -12,10 +12,14 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.codelab.app.R;
+import com.codelab.app.data.AuthManager;
 import com.codelab.app.data.ProfileStore;
 import com.codelab.app.data.RecentSessionStore;
 import com.codelab.app.data.UserProfile;
+import com.codelab.app.ui.auth.LoginActivity;
 import com.codelab.app.ui.settings.SettingsActivity;
+
+import java.util.concurrent.Executors;
 
 public class ProfileFragment extends Fragment {
 
@@ -39,8 +43,25 @@ public class ProfileFragment extends Fragment {
                 startActivity(new Intent(requireContext(), SettingsActivity.class)));
 
         v.findViewById(R.id.menuSignOut).setOnClickListener(view -> {
-            // Clear auth and restart - placeholder
-            android.widget.Toast.makeText(requireContext(), "Signed out", android.widget.Toast.LENGTH_SHORT).show();
+            new androidx.appcompat.app.AlertDialog.Builder(requireContext())
+                    .setTitle("Sign out?")
+                    .setMessage("You'll need to sign in again to access your lessons and sessions.")
+                    .setNegativeButton(R.string.action_cancel, null)
+                    .setPositiveButton("Sign out", (d, w) -> {
+                        android.content.Context ctx = requireContext().getApplicationContext();
+                        Executors.newSingleThreadExecutor().execute(() -> {
+                            AuthManager.logout(ctx);
+                            if (isAdded()) {
+                                requireActivity().runOnUiThread(() -> {
+                                    Intent i = new Intent(ctx, LoginActivity.class);
+                                    i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                    startActivity(i);
+                                    requireActivity().finish();
+                                });
+                            }
+                        });
+                    })
+                    .show();
         });
     }
 

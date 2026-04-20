@@ -1,0 +1,197 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/bg_primary"
+    android:fillViewport="true">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:padding="24dp">
+
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="@string/app_name"
+            android:textColor="@color/text_primary"
+            android:textSize="28sp"
+            android:textStyle="bold"
+            android:layout_marginTop="48dp"/>
+
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Welcome back"
+            android:textColor="@color/text_secondary"
+            android:textSize="14sp"
+            android:layout_marginTop="6dp"/>
+
+        <EditText
+            android:id="@+id/editEmail"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:hint="Email"
+            android:inputType="textEmailAddress"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_muted"
+            android:background="@drawable/bg_card"
+            android:padding="14dp"
+            android:layout_marginTop="28dp"/>
+
+        <EditText
+            android:id="@+id/editPassword"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:hint="Password"
+            android:inputType="textPassword"
+            android:textColor="@color/text_primary"
+            android:textColorHint="@color/text_muted"
+            android:background="@drawable/bg_card"
+            android:padding="14dp"
+            android:layout_marginTop="10dp"/>
+
+        <Button
+            android:id="@+id/btnLogin"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="Log In"
+            android:textAllCaps="false"
+            android:textStyle="bold"
+            android:layout_marginTop="16dp"/>
+
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="— or —"
+            android:textColor="@color/text_muted"
+            android:textSize="12sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="18dp"/>
+
+        <Button
+            android:id="@+id/btnGoogle"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="Continue with Google"
+            android:textAllCaps="false"
+            android:layout_marginTop="12dp"/>
+
+        <Button
+            android:id="@+id/btnGithub"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="Continue with GitHub"
+            android:textAllCaps="false"
+            android:layout_marginTop="8dp"/>
+
+        <Button
+            android:id="@+id/btnFacebook"
+            android:layout_width="match_parent" android:layout_height="wrap_content"
+            android:text="Continue with Facebook"
+            android:textAllCaps="false"
+            android:layout_marginTop="8dp"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:layout_marginTop="20dp">
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="New here?"
+                android:textColor="@color/text_secondary"
+                android:textSize="13sp"/>
+            <TextView
+                android:id="@+id/linkRegister"
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text=" Create an account"
+                android:textColor="?attr/colorPrimary"
+                android:textStyle="bold"
+                android:textSize="13sp"
+                android:clickable="true" android:focusable="true"/>
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/linkGuest"
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="Continue as guest"
+            android:textColor="@color/text_muted"
+            android:textSize="13sp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="10dp"
+            android:clickable="true" android:focusable="true"/>
+
+        <!-- Demo Accounts Section (temporary) -->
+        <TextView
+            android:layout_width="wrap_content" android:layout_height="wrap_content"
+            android:text="DEMO ACCOUNTS"
+            android:textColor="@color/text_muted"
+            android:textSize="11sp"
+            android:textStyle="bold"
+            android:letterSpacing="0.15"
+            android:layout_marginTop="32dp"/>
+
+        <LinearLayout
+            android:id="@+id/demoAdmin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card"
+            android:padding="14dp"
+            android:layout_marginTop="8dp"
+            android:clickable="true" android:focusable="true">
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="admin@edtronaut.ai"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Admin · demo123"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/demoCreator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card"
+            android:padding="14dp"
+            android:layout_marginTop="8dp"
+            android:clickable="true" android:focusable="true">
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="creator@edtronaut.ai"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="Creator · demo123"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/demoUser"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:background="@drawable/bg_card"
+            android:padding="14dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="24dp"
+            android:clickable="true" android:focusable="true">
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="user@edtronaut.ai"
+                android:textColor="@color/text_primary"
+                android:textSize="14sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content" android:layout_height="wrap_content"
+                android:text="User · demo123"
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"/>
+        </LinearLayout>
+
+    </LinearLayout>
+</ScrollView>

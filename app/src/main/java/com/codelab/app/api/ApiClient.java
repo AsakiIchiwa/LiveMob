@@ -5,9 +5,7 @@ import android.util.Base64;
 
 import com.codelab.app.BuildConfig;
 import com.codelab.app.api.dto.AuthResponse;
-import com.codelab.app.api.dto.DeviceLoginRequest;
 import com.codelab.app.data.SettingsStore;
-import com.codelab.app.util.Prefs;
 
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
@@ -76,28 +74,6 @@ public final class ApiClient {
         return null;
     }
 
-    private static AuthResponse loginWithDeviceId(Context ctx) {
-        try {
-            String deviceId = Prefs.getOrCreateUuid(ctx, "user_id");
-            OkHttpClient tempClient = new OkHttpClient.Builder()
-                    .connectTimeout(30, TimeUnit.SECONDS)
-                    .readTimeout(45, TimeUnit.SECONDS)
-                    .writeTimeout(30, TimeUnit.SECONDS)
-                    .build();
-            Retrofit tempRetrofit = new Retrofit.Builder()
-                    .baseUrl(SettingsStore.get(ctx).backendUrl())
-                    .client(tempClient)
-                    .addConverterFactory(GsonConverterFactory.create())
-                    .build();
-            ApiService tempApi = tempRetrofit.create(ApiService.class);
-            retrofit2.Response<AuthResponse> auth = tempApi.deviceLogin(new DeviceLoginRequest(deviceId)).execute();
-            if (auth.isSuccessful() && auth.body() != null) {
-                return auth.body();
-            }
-        } catch (Exception ignored) {}
-        return null;
-    }
-
     private static String ensureAccessToken(Context ctx) {
         SettingsStore store = SettingsStore.get(ctx);
         String token = store.accessToken();
@@ -106,22 +82,18 @@ public final class ApiClient {
             return token;
         }
 
-        AuthResponse auth = null;
+        // Only try refresh. Do NOT silently fall back to device-login — that would
+        // undo an explicit logout. Callers see a 401 and route to LoginActivity.
         String refreshToken = store.refreshToken();
         if (refreshToken != null && !refreshToken.isEmpty()) {
-            auth = loginWithRefreshToken(ctx, refreshToken);
-        }
-
-        if (auth == null) {
-            auth = loginWithDeviceId(ctx);
-        }
-
-        if (auth != null && auth.accessToken != null && !auth.accessToken.isEmpty()) {
-            store.setAccessToken(auth.accessToken);
-            if (auth.refreshToken != null && !auth.refreshToken.isEmpty()) {
-                store.setRefreshToken(auth.refreshToken);
+            AuthResponse auth = loginWithRefreshToken(ctx, refreshToken);
+            if (auth != null && auth.accessToken != null && !auth.accessToken.isEmpty()) {
+                store.setAccessToken(auth.accessToken);
+                if (auth.refreshToken != null && !auth.refreshToken.isEmpty()) {
+                    store.setRefreshToken(auth.refreshToken);
+                }
+                return auth.accessToken;
             }
-            return auth.accessToken;
         }
 
         return null;

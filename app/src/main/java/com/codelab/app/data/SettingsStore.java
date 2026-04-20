@@ -84,5 +84,14 @@ public final class SettingsStore {
     public boolean notifications() { return sp.getBoolean("notifications", true); }
     public void setNotifications(boolean v) { sp.edit().putBoolean("notifications", v).apply(); }
 
+    public static final String ACCENT_BLUE = "blue";
+    public static final String ACCENT_PURPLE = "purple";
+    public static final String ACCENT_GREEN = "green";
+    public static final String ACCENT_ORANGE = "orange";
+    public static final String ACCENT_RED = "red";
+
+    public String accentColor() { return sp.getString("accent_color", ACCENT_BLUE); }
+    public void setAccentColor(String c) { sp.edit().putString("accent_color", c).apply(); }
+
     public void clear() { sp.edit().clear().apply(); }
 }

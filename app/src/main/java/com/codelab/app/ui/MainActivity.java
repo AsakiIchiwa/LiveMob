@@ -8,7 +8,9 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 
 import com.codelab.app.R;
+import com.codelab.app.data.AuthManager;
 import com.codelab.app.data.ProfileStore;
+import com.codelab.app.ui.auth.LoginActivity;
 import com.codelab.app.ui.home.HomeFragment;
 import com.codelab.app.ui.market.MarketFragment;
 import com.codelab.app.ui.profile.ProfileFragment;
@@ -26,6 +28,15 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        if (!AuthManager.isLoggedIn(this)) {
+            Intent i = new Intent(this, LoginActivity.class);
+            i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+            startActivity(i);
+            finish();
+            return;
+        }
+
         setContentView(R.layout.activity_main);
 
         // Mark today as an active day for streak tracking

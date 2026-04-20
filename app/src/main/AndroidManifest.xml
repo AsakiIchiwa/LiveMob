@@ -18,7 +18,7 @@
         tools:targetApi="33">
 
         <activity
-            android:name=".ui.MainActivity"
+            android:name=".ui.auth.LoginActivity"
             android:exported="true"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
@@ -26,6 +26,30 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity android:name=".ui.auth.RegisterActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"
+            android:parentActivityName=".ui.auth.LoginActivity"/>
+
+        <activity
+            android:name=".ui.auth.OAuthCallbackActivity"
+            android:exported="true"
+            android:launchMode="singleTask"
+            android:taskAffinity=""
+            android:noHistory="true">
+            <intent-filter android:autoVerify="false">
+                <action android:name="android.intent.action.VIEW"/>
+                <category android:name="android.intent.category.DEFAULT"/>
+                <category android:name="android.intent.category.BROWSABLE"/>
+                <data android:scheme="codelab" android:host="oauth"/>
+            </intent-filter>
+        </activity>
+
+        <activity
+            android:name=".ui.MainActivity"
+            android:exported="false"
+            android:windowSoftInputMode="adjustResize"/>
 
         <activity android:name=".ui.PlaygroundActivity"
             android:exported="false" android:windowSoftInputMode="adjustResize"

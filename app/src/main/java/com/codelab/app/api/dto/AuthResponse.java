@@ -10,6 +10,9 @@ public class AuthResponse {
     public static class User {
         public String id;
         public String email;
-        @SerializedName("displayName") public String displayName;
+        public String displayName;
+        public String avatarUrl;
+        public String role;
+        public Boolean isAnonymous;
     }
 }

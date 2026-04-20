@@ -5,6 +5,11 @@ import com.codelab.app.api.dto.CreateSessionRequest;
 import com.codelab.app.api.dto.CreateSessionResponse;
 import com.codelab.app.api.dto.DeviceLoginRequest;
 import com.codelab.app.api.dto.ExecutionResponse;
+import com.codelab.app.api.dto.FacebookLoginRequest;
+import com.codelab.app.api.dto.GithubLoginRequest;
+import com.codelab.app.api.dto.GoogleLoginRequest;
+import com.codelab.app.api.dto.LoginRequest;
+import com.codelab.app.api.dto.RegisterRequest;
 import com.codelab.app.api.dto.RunRequest;
 import com.codelab.app.api.dto.RunResponse;
 import com.codelab.app.api.dto.UpdateSessionRequest;
@@ -26,6 +31,21 @@ import retrofit2.http.Query;
 public interface ApiService {
 
     // ──── Auth ────
+    @POST("api/v1/auth/register")
+    Call<AuthResponse> register(@Body RegisterRequest body);
+
+    @POST("api/v1/auth/login")
+    Call<AuthResponse> login(@Body LoginRequest body);
+
+    @POST("api/v1/auth/google-login")
+    Call<AuthResponse> googleLogin(@Body GoogleLoginRequest body);
+
+    @POST("api/v1/auth/github-login")
+    Call<AuthResponse> githubLogin(@Body GithubLoginRequest body);
+
+    @POST("api/v1/auth/facebook-login")
+    Call<AuthResponse> facebookLogin(@Body FacebookLoginRequest body);
+
     @POST("api/v1/auth/device-login")
     Call<AuthResponse> deviceLogin(@Body DeviceLoginRequest body);
 
