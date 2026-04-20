@@ -1,0 +1,81 @@
+{
+  "id": "web-api-basics",
+  "title": "Build a REST API",
+  "description": "Design, implement, and test a Node.js/Express REST API.",
+  "language": "javascript",
+  "difficulty": "Intermediate",
+  "sizeKb": 26,
+  "builtIn": false,
+  "lessons": [
+    {
+      "index": 1,
+      "title": "JSON Stringify",
+      "subtitle": "Serializing data",
+      "starterCode": "const user = { id: 1, name: 'Grace' };\n// TODO: log the JSON string of user\n",
+      "task": "Print user serialized as JSON. Expected: {\"id\":1,\"name\":\"Grace\"}",
+      "hint": "console.log(JSON.stringify(user));",
+      "expectedOutput": "{\"id\":1,\"name\":\"Grace\"}\n",
+      "xpReward": 70
+    },
+    {
+      "index": 2,
+      "title": "JSON Parse",
+      "subtitle": "Deserializing input",
+      "starterCode": "const raw = '{\"id\":2,\"name\":\"Alan\"}';\n// TODO: parse raw and log only the name\n",
+      "task": "Parse the JSON string and print just the name. Expected: Alan",
+      "hint": "const obj = JSON.parse(raw); console.log(obj.name);",
+      "expectedOutput": "Alan\n",
+      "xpReward": 90
+    },
+    {
+      "index": 3,
+      "title": "Route Handler",
+      "subtitle": "Pure-function request handling",
+      "starterCode": "// Simulated request: { method: 'GET', path: '/hello' }\nfunction handle(req) {\n    // TODO: return { status: 200, body: 'hello' } for GET /hello, else 404\n}\n\nconst res = handle({ method: 'GET', path: '/hello' });\nconsole.log(res.status + ' ' + res.body);\n",
+      "task": "Return 200 hello for GET /hello. Expected: 200 hello",
+      "hint": "if (req.method === 'GET' && req.path === '/hello') return { status: 200, body: 'hello' }; return { status: 404, body: 'not found' };",
+      "expectedOutput": "200 hello\n",
+      "xpReward": 130
+    },
+    {
+      "index": 4,
+      "title": "Query Params",
+      "subtitle": "Extracting ?key=value",
+      "starterCode": "function parseQuery(qs) {\n    // TODO: parse 'a=1&b=2' into { a: '1', b: '2' }\n}\n\nconst q = parseQuery('a=1&b=2');\nconsole.log(q.a + ',' + q.b);\n",
+      "task": "Parse the query string into an object. Expected: 1,2",
+      "hint": "Split on '&', then on '=' for each pair.",
+      "expectedOutput": "1,2\n",
+      "xpReward": 130
+    },
+    {
+      "index": 5,
+      "title": "Status Codes",
+      "subtitle": "Picking the right response",
+      "starterCode": "function codeFor(kind) {\n    // TODO: 'ok'->200, 'created'->201, 'bad'->400, 'missing'->404, default->500\n}\n\nconsole.log([codeFor('ok'), codeFor('created'), codeFor('missing'), codeFor('x')].join(','));\n",
+      "task": "Return the right status code for each kind. Expected: 200,201,404,500",
+      "hint": "Use a switch or an object map.",
+      "expectedOutput": "200,201,404,500\n",
+      "xpReward": 140
+    },
+    {
+      "index": 6,
+      "title": "Validation",
+      "subtitle": "Guarding input",
+      "starterCode": "function createUser(body) {\n    // TODO: reject missing name with { ok:false, error:'name required' }\n    // otherwise return { ok:true, user:{ name: body.name } }\n}\n\nconsole.log(JSON.stringify(createUser({})));\nconsole.log(JSON.stringify(createUser({ name: 'Ada' })));\n",
+      "task": "First call prints {\"ok\":false,\"error\":\"name required\"}; second prints {\"ok\":true,\"user\":{\"name\":\"Ada\"}}.",
+      "hint": "if (!body.name) return { ok: false, error: 'name required' };",
+      "expectedOutput": "{\"ok\":false,\"error\":\"name required\"}\n{\"ok\":true,\"user\":{\"name\":\"Ada\"}}\n",
+      "xpReward": 160
+    },
+    {
+      "index": 7,
+      "title": "Async Handler",
+      "subtitle": "Awaiting data",
+      "starterCode": "async function getUser(id) {\n    return { id, name: 'User' + id };\n}\n\nasync function main() {\n    // TODO: await getUser(42) and log name\n}\n\nmain();\n",
+      "task": "Await getUser(42) and log the name. Expected: User42",
+      "hint": "const u = await getUser(42); console.log(u.name);",
+      "expectedOutput": "User42\n",
+      "xpReward": 180
+    }
+  ]
+}

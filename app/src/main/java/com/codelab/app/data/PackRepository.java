@@ -115,9 +115,18 @@ public final class PackRepository {
 
     public String activePackId() {
         String id = sp.getString(KEY_ACTIVE, null);
-        if (id != null && isInstalled(id)) return id;
-        List<CatalogEntry> installed = installedEntries();
-        return installed.isEmpty() ? null : installed.get(0).id;
+        if (id != null && isInstalled(id) && isLessonPack(id)) return id;
+        for (CatalogEntry c : installedEntries()) {
+            if (!"language".equals(c.type)) return c.id;
+        }
+        return null;
+    }
+
+    private boolean isLessonPack(String packId) {
+        for (CatalogEntry c : catalog()) {
+            if (c.id.equals(packId)) return !"language".equals(c.type);
+        }
+        return false;
     }
 
     public void setActivePackId(String packId) {

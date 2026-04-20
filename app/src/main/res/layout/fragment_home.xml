@@ -160,7 +160,7 @@
                     android:textSize="11sp" />
             </LinearLayout>
 
-            <!-- Marketplace -->
+            <!-- Manage Downloads -->
             <LinearLayout
                 android:id="@+id/quickMarket"
                 android:layout_width="0dp"
@@ -182,15 +182,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Marketplace"
+                    android:text="Manage Downloads"
                     android:textColor="@color/text_primary"
                     android:textSize="13sp"
                     android:textStyle="bold" />
                 <TextView
+                    android:id="@+id/quickMarketSubtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="Browse packs"
+                    android:text="0 installed"
                     android:textColor="@color/text_secondary"
                     android:textSize="11sp" />
             </LinearLayout>

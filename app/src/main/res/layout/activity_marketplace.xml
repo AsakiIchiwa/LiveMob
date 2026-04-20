@@ -23,10 +23,11 @@
             android:contentDescription="@null"/>
 
         <TextView
+            android:id="@+id/marketTitle"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="@string/title_marketplace"
+            android:text="@string/title_manage_downloads"
             android:textColor="@color/text_primary"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -34,19 +35,65 @@
     </LinearLayout>
 
     <TextView
+        android:id="@+id/marketSubtitle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="Browse and install lesson packs to expand your library."
+        android:text="@string/manage_downloads_subtitle"
         android:textColor="@color/text_secondary"
         android:textSize="13sp"
         android:paddingTop="6dp"
         android:paddingBottom="12dp"/>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/marketRecycler"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="0dp"
-        android:layout_weight="1"
-        android:clipToPadding="false"
-        android:paddingBottom="16dp"/>
+        android:layout_weight="1">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/marketRecycler"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="16dp"/>
+
+        <LinearLayout
+            android:id="@+id/emptyInstalled"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:padding="32dp"
+            android:visibility="gone">
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="No packs installed yet"
+                android:textColor="@color/text_primary"
+                android:textSize="15sp"
+                android:textStyle="bold"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="6dp"
+                android:text="Browse the Marketplace to download lesson packs."
+                android:textColor="@color/text_secondary"
+                android:textSize="12sp"/>
+        </LinearLayout>
+    </FrameLayout>
+
+    <TextView
+        android:id="@+id/browseMarketplaceBtn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/bg_pill_accent"
+        android:text="Browse Marketplace"
+        android:textAllCaps="false"
+        android:textColor="@color/text_on_accent"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:paddingVertical="12dp"
+        android:clickable="true"
+        android:focusable="true"/>
 </LinearLayout>

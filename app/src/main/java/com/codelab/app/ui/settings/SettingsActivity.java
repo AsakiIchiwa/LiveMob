@@ -21,9 +21,6 @@ public class SettingsActivity extends AppCompatActivity {
     private static final String[] THEMES = { SettingsStore.THEME_DARK, SettingsStore.THEME_LIGHT, SettingsStore.THEME_SYSTEM };
     private static final String[] THEME_LABELS = { "Dark", "Light", "Follow system" };
 
-    private static final String[] CODE_LANGS = { "java", "python", "javascript", "typescript", "cpp" };
-    private static final String[] CODE_LANG_LABELS = { "Java", "Python", "JavaScript", "TypeScript", "C++" };
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -67,14 +64,6 @@ public class SettingsActivity extends AppCompatActivity {
                     s.setTheme(THEMES[idx]);
                     ((TextView) findViewById(R.id.rowThemeValue)).setText(THEME_LABELS[idx]);
                     SettingsStore.applyTheme(THEMES[idx]);
-                }));
-
-        // Default language
-        ((TextView) findViewById(R.id.rowDefaultLangValue)).setText(labelFor(CODE_LANGS, CODE_LANG_LABELS, s.defaultCodeLang()));
-        findViewById(R.id.rowDefaultLang).setOnClickListener(v ->
-                pickFromList("Default Language", CODE_LANG_LABELS, indexOf(CODE_LANGS, s.defaultCodeLang()), idx -> {
-                    s.setDefaultCodeLang(CODE_LANGS[idx]);
-                    ((TextView) findViewById(R.id.rowDefaultLangValue)).setText(CODE_LANG_LABELS[idx]);
                 }));
 
         // Notifications

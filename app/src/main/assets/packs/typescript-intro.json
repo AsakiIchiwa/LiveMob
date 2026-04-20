@@ -1,0 +1,61 @@
+{
+  "id": "typescript-intro",
+  "title": "TypeScript for Devs",
+  "description": "Move from JavaScript to TypeScript with confidence.",
+  "language": "typescript",
+  "difficulty": "Beginner",
+  "sizeKb": 16,
+  "builtIn": false,
+  "lessons": [
+    {
+      "index": 1,
+      "title": "Typed Variables",
+      "subtitle": "Primitive annotations",
+      "starterCode": "// TODO: declare name: string = 'Ada' and age: number = 36, then log them\n",
+      "task": "Declare two typed variables and log them on separate lines. Expected output:\nAda\n36",
+      "hint": "let name: string = 'Ada'; let age: number = 36;",
+      "expectedOutput": "Ada\n36\n",
+      "xpReward": 60
+    },
+    {
+      "index": 2,
+      "title": "Function Signatures",
+      "subtitle": "Typed parameters and return",
+      "starterCode": "// TODO: write add(a: number, b: number): number and call it with 2, 3\n",
+      "task": "Implement and call add. Must print 5.",
+      "hint": "function add(a: number, b: number): number { return a + b; }",
+      "expectedOutput": "5\n",
+      "xpReward": 100
+    },
+    {
+      "index": 3,
+      "title": "Interfaces",
+      "subtitle": "Object shapes",
+      "starterCode": "// TODO: define interface User { name: string; age: number } and log u.name\n",
+      "task": "Declare a User interface, create u: User, and log the name. Expected: Linus",
+      "hint": "interface User { name: string; age: number } const u: User = { name: 'Linus', age: 54 };",
+      "expectedOutput": "Linus\n",
+      "xpReward": 120
+    },
+    {
+      "index": 4,
+      "title": "Generics",
+      "subtitle": "Reusable type parameters",
+      "starterCode": "// TODO: function first<T>(arr: T[]): T | undefined — log first([10,20,30])\n",
+      "task": "Implement and call a generic first(). Must print 10.",
+      "hint": "function first<T>(arr: T[]): T | undefined { return arr[0]; }",
+      "expectedOutput": "10\n",
+      "xpReward": 150
+    },
+    {
+      "index": 5,
+      "title": "Union Types",
+      "subtitle": "Narrowing with typeof",
+      "starterCode": "// TODO: function fmt(v: string | number): string — log fmt(42) and fmt('hi')\n",
+      "task": "fmt(42) should log 'n:42' and fmt('hi') should log 's:hi'.",
+      "hint": "Use typeof v === 'number' to narrow.",
+      "expectedOutput": "n:42\ns:hi\n",
+      "xpReward": 180
+    }
+  ]
+}

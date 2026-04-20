@@ -38,6 +38,7 @@ public class HomeFragment extends Fragment {
     private View continueCard, btnResume;
     private RecyclerView recyclerSessions;
     private TextView emptyRecent;
+    private TextView quickMarketSubtitle;
 
     @Nullable @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -58,6 +59,7 @@ public class HomeFragment extends Fragment {
         btnResume = v.findViewById(R.id.btnResume);
         recyclerSessions = v.findViewById(R.id.recyclerSessions);
         emptyRecent = v.findViewById(R.id.emptyRecent);
+        quickMarketSubtitle = v.findViewById(R.id.quickMarketSubtitle);
 
         v.findViewById(R.id.quickPlayground).setOnClickListener(view ->
                 startActivity(new Intent(requireContext(), PlaygroundActivity.class)));
@@ -78,6 +80,13 @@ public class HomeFragment extends Fragment {
         bindGreeting();
         bindContinueLearning();
         bindRecentSessions();
+        bindManageDownloads();
+    }
+
+    private void bindManageDownloads() {
+        if (quickMarketSubtitle == null) return;
+        int count = PackRepository.get(requireContext()).installedEntries().size();
+        quickMarketSubtitle.setText(count == 1 ? "1 installed" : count + " installed");
     }
 
     private void bindGreeting() {

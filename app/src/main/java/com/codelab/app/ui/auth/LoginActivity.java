@@ -59,10 +59,7 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        if (AuthManager.isLoggedIn(this)) {
-            goToMain();
-            return;
-        }
+        // Auth check moved to SplashActivity
 
         setContentView(R.layout.activity_login);
 

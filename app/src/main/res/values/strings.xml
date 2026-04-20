@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">CodeLab</string>
+    <string name="splash_quote">The strong don\'t complain about the environment</string>
     <string name="brand">CODELAB</string>
     <string name="greeting_format">Good morning, %1$s 👋</string>
     <string name="label_continue_learning">CONTINUE LEARNING</string>
@@ -13,6 +14,8 @@
     <string name="title_study_mode">Study Mode</string>
     <string name="title_profile">Profile</string>
     <string name="title_marketplace">Marketplace</string>
+    <string name="title_manage_downloads">Manage Downloads</string>
+    <string name="manage_downloads_subtitle">Your installed packs. Tap to set active, long-press to uninstall.</string>
     <string name="title_settings">Settings</string>
     <string name="title_edit_profile">Edit Profile</string>
     <string name="action_new">+ New</string>

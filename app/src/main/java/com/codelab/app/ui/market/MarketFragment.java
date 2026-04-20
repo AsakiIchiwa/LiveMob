@@ -17,12 +17,14 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.codelab.app.R;
+import com.codelab.app.data.PackRepository;
 
 public class MarketFragment extends Fragment {
 
     private TextView tabAll, tabLanguage, tabLesson;
     private EditText searchInput;
     private RecyclerView recycler;
+    private MarketPackAdapter adapter;
     private String currentTab = "all";
 
     @Nullable
@@ -42,7 +44,19 @@ public class MarketFragment extends Fragment {
         recycler = view.findViewById(R.id.marketRecycler);
 
         recycler.setLayoutManager(new LinearLayoutManager(requireContext()));
-        recycler.setAdapter(new MarketPackAdapter(requireContext(), new java.util.ArrayList<>(), null));
+        PackRepository repo = PackRepository.get(requireContext());
+        adapter = new MarketPackAdapter(requireContext(), repo.catalog(), entry -> {
+            if (repo.isInstalled(entry.id)) {
+                repo.uninstall(entry.id);
+            } else {
+                repo.install(entry.id);
+                if (repo.activePackId() == null || !repo.isInstalled(repo.activePackId())) {
+                    repo.setActivePackId(entry.id);
+                }
+            }
+            adapter.notifyDataSetChanged();
+        });
+        recycler.setAdapter(adapter);
 
         tabAll.setOnClickListener(v -> switchTab("all"));
         tabLanguage.setOnClickListener(v -> switchTab("language"));
@@ -76,5 +90,11 @@ public class MarketFragment extends Fragment {
         if (recycler.getAdapter() instanceof MarketPackAdapter) {
             ((MarketPackAdapter) recycler.getAdapter()).setSearchQuery(query);
         }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (adapter != null) adapter.notifyDataSetChanged();
     }
 }

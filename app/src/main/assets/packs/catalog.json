@@ -8,7 +8,8 @@
       "difficulty": "Beginner",
       "sizeKb": 8,
       "description": "Core Java syntax — variables, control flow, loops, methods.",
-      "builtIn": true
+      "builtIn": true,
+      "type": "lesson"
     },
     {
       "id": "python-basics",
@@ -18,7 +19,8 @@
       "difficulty": "Beginner",
       "sizeKb": 14,
       "description": "Get started with Python: syntax, variables, lists, functions.",
-      "builtIn": false
+      "builtIn": false,
+      "type": "lesson"
     },
     {
       "id": "java-oop",
@@ -28,7 +30,8 @@
       "difficulty": "Intermediate",
       "sizeKb": 18,
       "description": "Classes, objects, inheritance, polymorphism, encapsulation.",
-      "builtIn": false
+      "builtIn": false,
+      "type": "lesson"
     },
     {
       "id": "javascript-essentials",
@@ -38,7 +41,118 @@
       "difficulty": "Beginner",
       "sizeKb": 14,
       "description": "Variables, functions, arrays, objects, async basics.",
-      "builtIn": false
+      "builtIn": false,
+      "type": "lesson"
+    },
+    {
+      "id": "python-algorithms",
+      "title": "Algorithms in Python",
+      "language": "python",
+      "lessonCount": 8,
+      "difficulty": "Intermediate",
+      "sizeKb": 22,
+      "description": "Sorting, searching, recursion, dynamic programming with Python.",
+      "builtIn": false,
+      "type": "lesson"
+    },
+    {
+      "id": "web-api-basics",
+      "title": "Build a REST API",
+      "language": "javascript",
+      "lessonCount": 7,
+      "difficulty": "Intermediate",
+      "sizeKb": 26,
+      "description": "Design, implement, and test a Node.js/Express REST API.",
+      "builtIn": false,
+      "type": "lesson"
+    },
+    {
+      "id": "typescript-intro",
+      "title": "TypeScript for Devs",
+      "language": "typescript",
+      "lessonCount": 5,
+      "difficulty": "Beginner",
+      "sizeKb": 16,
+      "description": "Move from JavaScript to TypeScript with confidence.",
+      "builtIn": false,
+      "type": "lesson"
+    },
+    {
+      "id": "cpp-foundations",
+      "title": "C++ Foundations",
+      "language": "cpp",
+      "lessonCount": 6,
+      "difficulty": "Beginner",
+      "sizeKb": 20,
+      "description": "Pointers, references, memory model, STL basics.",
+      "builtIn": false,
+      "type": "lesson"
+    },
+    {
+      "id": "interview-prep",
+      "title": "Interview Prep · Arrays & Strings",
+      "language": "java",
+      "lessonCount": 10,
+      "difficulty": "Advanced",
+      "sizeKb": 32,
+      "description": "Common interview patterns: two pointers, sliding window, hashing.",
+      "builtIn": false,
+      "type": "lesson"
+    },
+    {
+      "id": "lang-java",
+      "title": "Java Runtime",
+      "language": "java",
+      "lessonCount": 0,
+      "difficulty": "Runtime",
+      "sizeKb": 0,
+      "description": "Built-in Java runtime. Create a .java file and it runs.",
+      "builtIn": true,
+      "type": "language"
+    },
+    {
+      "id": "lang-python",
+      "title": "Python Runtime",
+      "language": "python",
+      "lessonCount": 0,
+      "difficulty": "Runtime",
+      "sizeKb": 0,
+      "description": "Built-in Python 3 runtime. Create a .py file and it runs.",
+      "builtIn": true,
+      "type": "language"
+    },
+    {
+      "id": "lang-javascript",
+      "title": "JavaScript Runtime",
+      "language": "javascript",
+      "lessonCount": 0,
+      "difficulty": "Runtime",
+      "sizeKb": 0,
+      "description": "Built-in Node.js runtime. Create a .js file and it runs.",
+      "builtIn": true,
+      "type": "language"
+    },
+    {
+      "id": "lang-typescript",
+      "title": "TypeScript Runtime",
+      "language": "typescript",
+      "lessonCount": 0,
+      "difficulty": "Runtime",
+      "sizeKb": 0,
+      "description": "Built-in TypeScript runtime. Create a .ts file and it runs.",
+      "builtIn": true,
+      "type": "language"
+    },
+    {
+      "id": "lang-cpp",
+      "title": "C++ Runtime",
+      "language": "cpp",
+      "lessonCount": 0,
+      "difficulty": "Runtime",
+      "sizeKb": 0,
+      "description": "Built-in C++ runtime (g++). Create a .cpp file and it runs.",
+      "builtIn": true,
+      "type": "language"
     }
   ]
 }
