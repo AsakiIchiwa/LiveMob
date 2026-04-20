@@ -12,6 +12,7 @@ public final class SettingsStore {
     private static final String KEY_DEFAULT_LANG = "default_code_lang"; // java, python, …
     private static final String KEY_BACKEND_URL = "backend_url";
     private static final String KEY_ACCESS_TOKEN = "access_token";
+    private static final String KEY_REFRESH_TOKEN = "refresh_token";
 
     public static final String THEME_DARK = "dark";
     public static final String THEME_LIGHT = "light";
@@ -64,6 +65,8 @@ public final class SettingsStore {
 
     public String accessToken() { return sp.getString(KEY_ACCESS_TOKEN, null); }
     public void setAccessToken(String token) { sp.edit().putString(KEY_ACCESS_TOKEN, token).apply(); }
+    public String refreshToken() { return sp.getString(KEY_REFRESH_TOKEN, null); }
+    public void setRefreshToken(String token) { sp.edit().putString(KEY_REFRESH_TOKEN, token).apply(); }
 
     // Editor settings
     public int fontSize() { return sp.getInt("font_size", 14); }

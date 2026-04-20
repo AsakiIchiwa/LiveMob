@@ -1,6 +1,7 @@
 package com.codelab.app.api;
 
 import android.content.Context;
+import android.util.Base64;
 
 import com.codelab.app.BuildConfig;
 import com.codelab.app.api.dto.AuthResponse;
@@ -9,6 +10,9 @@ import com.codelab.app.data.SettingsStore;
 import com.codelab.app.util.Prefs;
 
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.Authenticator;
@@ -17,6 +21,7 @@ import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.Route;
 import okhttp3.logging.HttpLoggingInterceptor;
+import org.json.JSONObject;
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -29,6 +34,98 @@ public final class ApiClient {
     private static volatile String currentBaseUrl;
 
     private ApiClient() {}
+
+    private static boolean isJwtExpired(String token) {
+        if (token == null || token.isEmpty()) return true;
+
+        try {
+            String[] parts = token.split("\\.");
+            if (parts.length < 2) return false;
+
+            byte[] payloadBytes = Base64.decode(parts[1], Base64.URL_SAFE | Base64.NO_WRAP | Base64.NO_PADDING);
+            JSONObject payload = new JSONObject(new String(payloadBytes, StandardCharsets.UTF_8));
+            if (!payload.has("exp")) return false;
+
+            long expiresAtSeconds = payload.getLong("exp");
+            return System.currentTimeMillis() >= expiresAtSeconds * 1000L;
+        } catch (Exception ignored) {
+            return false;
+        }
+    }
+
+    private static AuthResponse loginWithRefreshToken(Context ctx, String refreshToken) {
+        try {
+            OkHttpClient tempClient = new OkHttpClient.Builder()
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(45, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .build();
+            Retrofit tempRetrofit = new Retrofit.Builder()
+                    .baseUrl(SettingsStore.get(ctx).backendUrl())
+                    .client(tempClient)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            ApiService tempApi = tempRetrofit.create(ApiService.class);
+            Map<String, String> body = new HashMap<>();
+            body.put("refresh_token", refreshToken);
+            retrofit2.Response<AuthResponse> auth = tempApi.refreshToken(body).execute();
+            if (auth.isSuccessful() && auth.body() != null) {
+                return auth.body();
+            }
+        } catch (Exception ignored) {}
+        return null;
+    }
+
+    private static AuthResponse loginWithDeviceId(Context ctx) {
+        try {
+            String deviceId = Prefs.getOrCreateUuid(ctx, "user_id");
+            OkHttpClient tempClient = new OkHttpClient.Builder()
+                    .connectTimeout(30, TimeUnit.SECONDS)
+                    .readTimeout(45, TimeUnit.SECONDS)
+                    .writeTimeout(30, TimeUnit.SECONDS)
+                    .build();
+            Retrofit tempRetrofit = new Retrofit.Builder()
+                    .baseUrl(SettingsStore.get(ctx).backendUrl())
+                    .client(tempClient)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build();
+            ApiService tempApi = tempRetrofit.create(ApiService.class);
+            retrofit2.Response<AuthResponse> auth = tempApi.deviceLogin(new DeviceLoginRequest(deviceId)).execute();
+            if (auth.isSuccessful() && auth.body() != null) {
+                return auth.body();
+            }
+        } catch (Exception ignored) {}
+        return null;
+    }
+
+    private static String ensureAccessToken(Context ctx) {
+        SettingsStore store = SettingsStore.get(ctx);
+        String token = store.accessToken();
+
+        if (token != null && !token.isEmpty() && !isJwtExpired(token)) {
+            return token;
+        }
+
+        AuthResponse auth = null;
+        String refreshToken = store.refreshToken();
+        if (refreshToken != null && !refreshToken.isEmpty()) {
+            auth = loginWithRefreshToken(ctx, refreshToken);
+        }
+
+        if (auth == null) {
+            auth = loginWithDeviceId(ctx);
+        }
+
+        if (auth != null && auth.accessToken != null && !auth.accessToken.isEmpty()) {
+            store.setAccessToken(auth.accessToken);
+            if (auth.refreshToken != null && !auth.refreshToken.isEmpty()) {
+                store.setRefreshToken(auth.refreshToken);
+            }
+            return auth.accessToken;
+        }
+
+        return null;
+    }
 
     public static ApiService get(Context ctx) {
         String url = SettingsStore.get(ctx).backendUrl();
@@ -45,30 +142,11 @@ public final class ApiClient {
                             .readTimeout(45, TimeUnit.SECONDS)
                             .writeTimeout(30, TimeUnit.SECONDS)
                             .addInterceptor(chain -> {
-                                String token = SettingsStore.get(ctx).accessToken();
                                 Request original = chain.request();
 
-                                // Auto device-login if no token and not already an auth request
-                                if ((token == null || token.isEmpty())
-                                        && !original.url().encodedPath().contains("/auth/")) {
-                                    try {
-                                        String deviceId = Prefs.getOrCreateUuid(ctx, "user_id");
-                                        OkHttpClient tempClient = new OkHttpClient.Builder()
-                                                .connectTimeout(30, TimeUnit.SECONDS)
-                                                .build();
-                                        Retrofit tempRetrofit = new Retrofit.Builder()
-                                                .baseUrl(SettingsStore.get(ctx).backendUrl())
-                                                .client(tempClient)
-                                                .addConverterFactory(GsonConverterFactory.create())
-                                                .build();
-                                        ApiService tempApi = tempRetrofit.create(ApiService.class);
-                                        retrofit2.Response<AuthResponse> auth =
-                                                tempApi.deviceLogin(new DeviceLoginRequest(deviceId)).execute();
-                                        if (auth.isSuccessful() && auth.body() != null) {
-                                            token = auth.body().accessToken;
-                                            SettingsStore.get(ctx).setAccessToken(token);
-                                        }
-                                    } catch (Exception ignored) {}
+                                String token = SettingsStore.get(ctx).accessToken();
+                                if (!original.url().encodedPath().contains("/auth/")) {
+                                    token = ensureAccessToken(ctx);
                                 }
 
                                 if (token == null || token.isEmpty()) return chain.proceed(original);
@@ -81,28 +159,12 @@ public final class ApiClient {
                             .authenticator(new Authenticator() {
                                 @Override
                                 public Request authenticate(Route route, Response response) throws IOException {
-                                    // Token expired — re-login
-                                    String deviceId = Prefs.getOrCreateUuid(ctx, "user_id");
-                                    try {
-                                        OkHttpClient tempClient = new OkHttpClient.Builder()
-                                                .connectTimeout(30, TimeUnit.SECONDS)
-                                                .build();
-                                        Retrofit tempRetrofit = new Retrofit.Builder()
-                                                .baseUrl(SettingsStore.get(ctx).backendUrl())
-                                                .client(tempClient)
-                                                .addConverterFactory(GsonConverterFactory.create())
-                                                .build();
-                                        ApiService tempApi = tempRetrofit.create(ApiService.class);
-                                        retrofit2.Response<AuthResponse> auth =
-                                                tempApi.deviceLogin(new DeviceLoginRequest(deviceId)).execute();
-                                        if (auth.isSuccessful() && auth.body() != null) {
-                                            String newToken = auth.body().accessToken;
-                                            SettingsStore.get(ctx).setAccessToken(newToken);
-                                            return response.request().newBuilder()
-                                                    .header("Authorization", "Bearer " + newToken)
-                                                    .build();
-                                        }
-                                    } catch (Exception ignored) {}
+                                    String newToken = ensureAccessToken(ctx);
+                                    if (newToken != null && !newToken.isEmpty()) {
+                                    return response.request().newBuilder()
+                                        .header("Authorization", "Bearer " + newToken)
+                                        .build();
+                                    }
                                     return null;
                                 }
                             })
