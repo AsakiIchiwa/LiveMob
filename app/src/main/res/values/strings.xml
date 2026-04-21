@@ -104,4 +104,9 @@
     <string name="format_study_progress">%1$d / %2$d done</string>
     <string name="label_no_pack">No pack</string>
     <string name="title_my_projects">My Projects</string>
+    <string name="action_rename">Rename</string>
+    <string name="action_delete">Delete</string>
+    <string name="action_new_file">New File</string>
+    <string name="confirm_delete_project">Delete \"%1$s\"? This cannot be undone.</string>
+    <string name="confirm_delete_file">Delete file \"%1$s\"?</string>
 </resources>

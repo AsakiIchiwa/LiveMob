@@ -73,6 +73,45 @@ public final class RecentSessionStore {
         return null;
     }
 
+    /** Save the file list for a session. */
+    public void saveFiles(String id, List<RecentSession.ProjectFile> files) {
+        List<RecentSession> list = all();
+        for (int i = 0; i < list.size(); i++) {
+            RecentSession s = list.get(i);
+            if (id.equals(s.id)) {
+                s.files = new ArrayList<>(files);
+                list.set(i, s);
+                break;
+            }
+        }
+        sp.edit().putString(KEY, gson.toJson(list)).apply();
+    }
+
+    /** Delete a session by id. */
+    public void delete(String id) {
+        List<RecentSession> list = all();
+        for (Iterator<RecentSession> it = list.iterator(); it.hasNext(); ) {
+            if (id.equals(it.next().id)) { it.remove(); break; }
+        }
+        sp.edit().putString(KEY, gson.toJson(list)).apply();
+    }
+
+    /** Rename a session's display filename. */
+    public void rename(String id, String newFilename) {
+        List<RecentSession> list = all();
+        for (int i = 0; i < list.size(); i++) {
+            RecentSession s = list.get(i);
+            if (id.equals(s.id)) {
+                RecentSession updated = new RecentSession(s.id, newFilename, s.where,
+                        s.language, s.sourceCode, s.timestampMs, s.backendSessionId);
+                updated.files = s.files;
+                list.set(i, updated);
+                break;
+            }
+        }
+        sp.edit().putString(KEY, gson.toJson(list)).apply();
+    }
+
     public void clear() {
         sp.edit().clear().apply();
     }

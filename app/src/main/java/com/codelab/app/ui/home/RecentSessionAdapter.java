@@ -17,13 +17,19 @@ import java.util.concurrent.TimeUnit;
 public class RecentSessionAdapter extends RecyclerView.Adapter<RecentSessionAdapter.VH> {
 
     public interface OnClick { void onClick(RecentSession s); }
+    public interface OnLongClick { void onLongClick(View anchor, RecentSession s); }
 
     private final List<RecentSession> items;
     private final OnClick listener;
+    private OnLongClick longClickListener;
 
     public RecentSessionAdapter(List<RecentSession> items, OnClick listener) {
         this.items = items;
         this.listener = listener;
+    }
+
+    public void setOnLongClickListener(OnLongClick l) {
+        this.longClickListener = l;
     }
 
     @NonNull @Override
@@ -37,8 +43,20 @@ public class RecentSessionAdapter extends RecyclerView.Adapter<RecentSessionAdap
     public void onBindViewHolder(@NonNull VH h, int position) {
         RecentSession s = items.get(position);
         h.title.setText(s.filename);
-        h.subtitle.setText(s.where + " · " + relative(s.timestampMs));
+
+        int fileCount = s.getFiles().size();
+        String info = s.where + " · " + fileCount + (fileCount == 1 ? " file" : " files")
+                + " · " + relative(s.timestampMs);
+        h.subtitle.setText(info);
+
         h.itemView.setOnClickListener(v -> { if (listener != null) listener.onClick(s); });
+        h.itemView.setOnLongClickListener(v -> {
+            if (longClickListener != null) {
+                longClickListener.onLongClick(v, s);
+                return true;
+            }
+            return false;
+        });
     }
 
     @Override public int getItemCount() { return items.size(); }

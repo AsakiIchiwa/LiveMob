@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.EditText;
@@ -11,8 +12,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.codelab.app.R;
 import com.codelab.app.api.dto.ExecutionResponse;
@@ -21,6 +25,9 @@ import com.codelab.app.data.RecentSession;
 import com.codelab.app.data.RecentSessionStore;
 import com.codelab.app.data.SettingsStore;
 import com.codelab.app.util.CodeRunner;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class PlaygroundActivity extends AppCompatActivity {
 
@@ -43,12 +50,18 @@ public class PlaygroundActivity extends AppCompatActivity {
     private View consolePanel;
     private DrawerLayout drawerLayout;
     private View explorerDrawer;
+    private RecyclerView explorerList;
+    private ExplorerAdapter explorerAdapter;
     private CodeRunner runner;
     private String currentLanguage;
     private String currentSessionId;
-    private String currentFilename;
     private boolean awardedFirstRun;
     private boolean consoleVisible = false;
+
+    /** All files in the current project. */
+    private List<RecentSession.ProjectFile> projectFiles = new ArrayList<>();
+    /** Index of the currently-active file in the editor. */
+    private int activeFileIndex = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,31 +79,51 @@ public class PlaygroundActivity extends AppCompatActivity {
         consolePanel = findViewById(R.id.consolePanel);
         drawerLayout = findViewById(R.id.drawerLayout);
         explorerDrawer = findViewById(R.id.explorerDrawer);
+        explorerList = findViewById(R.id.explorerList);
 
         runner = new CodeRunner(this);
         currentLanguage = SettingsStore.get(this).defaultCodeLang();
 
+        // Load existing session or start new
         String openId = getIntent().getStringExtra(EXTRA_SESSION_ID);
         if (openId != null) {
             RecentSession s = RecentSessionStore.get(this).findById(openId);
             if (s != null) {
                 currentSessionId = s.id;
                 currentLanguage = s.language;
-                currentFilename = s.filename;
-                editor.setText(s.sourceCode);
+                projectFiles = new ArrayList<>(s.getFiles());
             }
         }
-        if (currentFilename == null) currentFilename = defaultFilename(currentLanguage);
-        if (editor.getText().length() == 0) editor.setText(defaultCode(currentLanguage));
-        fileTabLabel.setText(currentFilename);
+        if (projectFiles.isEmpty()) {
+            projectFiles.add(new RecentSession.ProjectFile(
+                    defaultFilename(currentLanguage), defaultCode(currentLanguage)));
+        }
+        activeFileIndex = 0;
+        loadFileIntoEditor(activeFileIndex);
         updateStatusBar();
-
         refreshLineNumbers();
+
+        // Explorer setup
+        explorerList.setLayoutManager(new LinearLayoutManager(this));
+        explorerAdapter = new ExplorerAdapter(projectFiles, activeFileIndex, new ExplorerAdapter.Listener() {
+            @Override public void onFileClick(int index) {
+                switchToFile(index);
+                drawerLayout.closeDrawer(explorerDrawer);
+            }
+            @Override public void onFileDelete(int index) {
+                confirmDeleteFile(index);
+            }
+        });
+        explorerList.setAdapter(explorerAdapter);
 
         editor.addTextChangedListener(new TextWatcher() {
             @Override public void beforeTextChanged(CharSequence s, int a, int b, int c) {}
             @Override public void onTextChanged(CharSequence s, int a, int b, int c) {}
             @Override public void afterTextChanged(Editable s) {
+                // Save content back to the active file
+                if (activeFileIndex < projectFiles.size()) {
+                    projectFiles.get(activeFileIndex).content = s.toString();
+                }
                 refreshLineNumbers();
                 updateStatusBar();
                 persistLocal();
@@ -102,7 +135,7 @@ public class PlaygroundActivity extends AppCompatActivity {
         langBadge.setText(currentLanguage.substring(0, 1).toUpperCase() + currentLanguage.substring(1));
 
         findViewById(R.id.btnUndo).setOnClickListener(v -> {
-            // Simple undo - clear last char (placeholder)
+            // Simple undo placeholder
         });
         findViewById(R.id.btnSave).setOnClickListener(v -> {
             persistLocal();
@@ -120,21 +153,14 @@ public class PlaygroundActivity extends AppCompatActivity {
             startActivity(Intent.createChooser(share, "Share code"));
         });
         findViewById(R.id.btnFolder).setOnClickListener(v -> {
+            explorerAdapter.update(projectFiles, activeFileIndex);
             drawerLayout.openDrawer(explorerDrawer);
         });
 
-        // File tab new button
-        findViewById(R.id.btnNew).setOnClickListener(v -> {
-            currentSessionId = null;
-            currentFilename = defaultFilename(currentLanguage);
-            editor.setText(defaultCode(currentLanguage));
-            fileTabLabel.setText(currentFilename);
-            runner.resetSession();
-            outputView.setText("");
-            setStatus("Ready", Color.parseColor("#34D399"));
-        });
+        // File tab "+" — add new file
+        findViewById(R.id.btnNew).setOnClickListener(v -> showNewFileDialog());
 
-        // File tab close
+        // File tab close — close current file tab (switch to next or finish)
         findViewById(R.id.fileTabClose).setOnClickListener(v -> finish());
 
         // Console controls
@@ -142,32 +168,83 @@ public class PlaygroundActivity extends AppCompatActivity {
         findViewById(R.id.btnCloseConsole).setOnClickListener(v -> hideConsole());
         findViewById(R.id.btnClearConsole).setOnClickListener(v -> outputView.setText(""));
 
-        // Console tabs
-        findViewById(R.id.consTabOutput).setOnClickListener(v -> {
-            // Already showing output
-        });
-        findViewById(R.id.consTabProblems).setOnClickListener(v -> {
-            // Could show problems/errors - placeholder
-        });
+        findViewById(R.id.consTabOutput).setOnClickListener(v -> { /* already showing output */ });
+        findViewById(R.id.consTabProblems).setOnClickListener(v -> { /* placeholder */ });
 
-        // Explorer new file
+        // Explorer new file button
         findViewById(R.id.btnNewFileDrawer).setOnClickListener(v -> {
             drawerLayout.closeDrawer(explorerDrawer);
-            currentSessionId = null;
-            currentFilename = defaultFilename(currentLanguage);
-            editor.setText(defaultCode(currentLanguage));
-            fileTabLabel.setText(currentFilename);
-            runner.resetSession();
+            showNewFileDialog();
         });
 
         btnRun.setOnClickListener(v -> onRunClicked());
         setStatus("Ready", Color.parseColor("#34D399"));
 
-        // Console hidden initially
         consolePanel.setVisibility(View.GONE);
-
         ProfileStore.get(this).touchActivity();
     }
+
+    // ── Multi-file management ───────────────────────────────────────────
+
+    private void loadFileIntoEditor(int index) {
+        if (index < 0 || index >= projectFiles.size()) return;
+        RecentSession.ProjectFile f = projectFiles.get(index);
+        editor.setText(f.content);
+        fileTabLabel.setText(f.name);
+        activeFileIndex = index;
+        if (explorerAdapter != null) explorerAdapter.update(projectFiles, activeFileIndex);
+    }
+
+    private void switchToFile(int index) {
+        // Save current content first
+        if (activeFileIndex < projectFiles.size()) {
+            projectFiles.get(activeFileIndex).content = editor.getText().toString();
+        }
+        loadFileIntoEditor(index);
+    }
+
+    private void showNewFileDialog() {
+        EditText input = new EditText(this);
+        input.setInputType(InputType.TYPE_CLASS_TEXT);
+        input.setHint("filename.java");
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.action_new_file)
+                .setView(input)
+                .setPositiveButton(R.string.action_save, (d, w) -> {
+                    String name = input.getText().toString().trim();
+                    if (!name.isEmpty()) {
+                        // Save current file content
+                        if (activeFileIndex < projectFiles.size()) {
+                            projectFiles.get(activeFileIndex).content = editor.getText().toString();
+                        }
+                        projectFiles.add(new RecentSession.ProjectFile(name, ""));
+                        switchToFile(projectFiles.size() - 1);
+                        persistLocal();
+                    }
+                })
+                .setNegativeButton(R.string.action_cancel, null)
+                .show();
+    }
+
+    private void confirmDeleteFile(int index) {
+        if (projectFiles.size() <= 1) return; // can't delete last file
+        String name = projectFiles.get(index).name;
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.action_delete)
+                .setMessage(getString(R.string.confirm_delete_file, name))
+                .setPositiveButton(R.string.action_delete, (d, w) -> {
+                    projectFiles.remove(index);
+                    if (activeFileIndex >= projectFiles.size()) {
+                        activeFileIndex = projectFiles.size() - 1;
+                    }
+                    loadFileIntoEditor(activeFileIndex);
+                    persistLocal();
+                })
+                .setNegativeButton(R.string.action_cancel, null)
+                .show();
+    }
+
+    // ── Existing methods ────────────────────────────────────────────────
 
     private void toggleConsole() {
         if (consoleVisible) hideConsole(); else showConsole();
@@ -204,13 +281,21 @@ public class PlaygroundActivity extends AppCompatActivity {
     }
 
     private void persistLocal() {
+        // Save current editor content to active file
+        if (activeFileIndex < projectFiles.size()) {
+            projectFiles.get(activeFileIndex).content = editor.getText().toString();
+        }
+        String primaryFilename = projectFiles.isEmpty() ? defaultFilename(currentLanguage) : projectFiles.get(0).name;
+        String primaryCode = projectFiles.isEmpty() ? "" : projectFiles.get(0).content;
         currentSessionId = RecentSessionStore.get(this).save(
                 currentSessionId,
-                currentFilename,
+                primaryFilename,
                 "Playground",
                 currentLanguage,
-                editor.getText().toString(),
+                primaryCode,
                 runner.backendSessionId());
+        // Also save the full file list
+        RecentSessionStore.get(this).saveFiles(currentSessionId, projectFiles);
     }
 
     private void refreshLineNumbers() {

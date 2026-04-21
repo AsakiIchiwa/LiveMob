@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:gravity="center_vertical"
+    android:paddingHorizontal="8dp"
+    android:paddingVertical="6dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:background="?attr/selectableItemBackground">
+
+    <ImageView
+        android:id="@+id/explorerFileIcon"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:src="@drawable/ic_file"
+        android:contentDescription="@null"/>
+
+    <TextView
+        android:id="@+id/explorerFileName"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textColor="#CCCCCC"
+        android:textSize="12sp"
+        android:fontFamily="monospace"
+        android:paddingStart="8dp"
+        android:singleLine="true"
+        android:ellipsize="middle"/>
+
+    <ImageView
+        android:id="@+id/explorerFileDelete"
+        android:layout_width="20dp"
+        android:layout_height="20dp"
+        android:src="@drawable/ic_delete"
+        android:padding="2dp"
+        android:contentDescription="Delete file"
+        android:clickable="true"
+        android:focusable="true"
+        android:visibility="gone"/>
+</LinearLayout>
