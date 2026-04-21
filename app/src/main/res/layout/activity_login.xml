@@ -69,6 +69,8 @@
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="Continue with Google"
             android:textAllCaps="false"
+            android:drawableStart="@drawable/ic_google"
+            android:drawablePadding="8dp"
             android:layout_marginTop="12dp"/>
 
         <Button
@@ -76,6 +78,8 @@
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="Continue with GitHub"
             android:textAllCaps="false"
+            android:drawableStart="@drawable/ic_github"
+            android:drawablePadding="8dp"
             android:layout_marginTop="8dp"/>
 
         <Button
@@ -83,6 +87,8 @@
             android:layout_width="match_parent" android:layout_height="wrap_content"
             android:text="Continue with Facebook"
             android:textAllCaps="false"
+            android:drawableStart="@drawable/ic_facebook"
+            android:drawablePadding="8dp"
             android:layout_marginTop="8dp"/>
 
         <LinearLayout

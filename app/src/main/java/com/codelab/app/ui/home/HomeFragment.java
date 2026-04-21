@@ -27,6 +27,8 @@ import com.codelab.app.ui.MainActivity;
 import com.codelab.app.ui.PlaygroundActivity;
 import com.codelab.app.ui.lesson.LessonActivity;
 import com.codelab.app.ui.market.MarketplaceActivity;
+import com.codelab.app.ui.notifications.NotificationsActivity;
+import com.codelab.app.ui.projects.ProjectsActivity;
 
 import java.util.List;
 
@@ -39,6 +41,9 @@ public class HomeFragment extends Fragment {
     private RecyclerView recyclerSessions;
     private TextView emptyRecent;
     private TextView quickMarketSubtitle;
+    private TextView quickStudySubtitle;
+    private TextView quickProjectsSubtitle;
+    private TextView activeLanguageName;
 
     @Nullable @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container,
@@ -60,16 +65,39 @@ public class HomeFragment extends Fragment {
         recyclerSessions = v.findViewById(R.id.recyclerSessions);
         emptyRecent = v.findViewById(R.id.emptyRecent);
         quickMarketSubtitle = v.findViewById(R.id.quickMarketSubtitle);
+        quickStudySubtitle = v.findViewById(R.id.quickStudySubtitle);
+        quickProjectsSubtitle = v.findViewById(R.id.quickProjectsSubtitle);
+        activeLanguageName = v.findViewById(R.id.activeLanguageName);
 
+        // Quick grid actions
         v.findViewById(R.id.quickPlayground).setOnClickListener(view ->
                 startActivity(new Intent(requireContext(), PlaygroundActivity.class)));
         v.findViewById(R.id.quickStudy).setOnClickListener(view ->
                 ((MainActivity) requireActivity()).selectTab(MainActivity.TAB_STUDY));
         v.findViewById(R.id.quickMarket).setOnClickListener(view ->
                 startActivity(new Intent(requireContext(), MarketplaceActivity.class)));
+        v.findViewById(R.id.quickProjects).setOnClickListener(view ->
+                startActivity(new Intent(requireContext(), ProjectsActivity.class)));
 
+        // Notification bell → NotificationsActivity
+        v.findViewById(R.id.btnNotification).setOnClickListener(view ->
+                startActivity(new Intent(requireContext(), NotificationsActivity.class)));
+
+        // Avatar → navigate to Profile tab
+        v.findViewById(R.id.profileAvatar).setOnClickListener(view ->
+                ((MainActivity) requireActivity()).selectTab(MainActivity.TAB_PROFILE));
+
+        // Active language card → Study tab
+        v.findViewById(R.id.activeLanguageCard).setOnClickListener(view ->
+                ((MainActivity) requireActivity()).selectTab(MainActivity.TAB_STUDY));
+
+        // Continue learning → See all → Study tab
         v.findViewById(R.id.continueSeeAll).setOnClickListener(view ->
                 ((MainActivity) requireActivity()).selectTab(MainActivity.TAB_STUDY));
+
+        // Recent sessions → See all → opens Projects list
+        v.findViewById(R.id.recentSeeAll).setOnClickListener(view ->
+                startActivity(new Intent(requireContext(), ProjectsActivity.class)));
 
         recyclerSessions.setLayoutManager(new LinearLayoutManager(requireContext()));
     }
@@ -78,24 +106,51 @@ public class HomeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         bindGreeting();
+        bindQuickGrid();
+        bindActiveLanguage();
         bindContinueLearning();
         bindRecentSessions();
-        bindManageDownloads();
-    }
-
-    private void bindManageDownloads() {
-        if (quickMarketSubtitle == null) return;
-        int count = PackRepository.get(requireContext()).installedEntries().size();
-        quickMarketSubtitle.setText(count == 1 ? "1 installed" : count + " installed");
     }
 
     private void bindGreeting() {
         String name = ProfileStore.get(requireContext()).get().name;
         if (name == null || name.isEmpty()) name = "Coder";
-        // Use first name only
         int sp = name.indexOf(' ');
         if (sp > 0) name = name.substring(0, sp);
         greetingText.setText(getString(R.string.greeting_format, name));
+    }
+
+    private void bindQuickGrid() {
+        // Manage Downloads count
+        int packCount = PackRepository.get(requireContext()).installedEntries().size();
+        quickMarketSubtitle.setText(packCount == 1
+                ? getString(R.string.format_one_installed)
+                : getString(R.string.format_installed, packCount));
+
+        // Study Mode progress
+        LessonPack pack = LessonRepository.getActivePack(requireContext());
+        if (pack != null && pack.lessons != null && !pack.lessons.isEmpty()) {
+            int total = pack.lessons.size();
+            int done = ProgressStore.get(requireContext()).countCompleted(pack.id, total);
+            quickStudySubtitle.setText(getString(R.string.format_study_progress, done, total));
+        } else {
+            quickStudySubtitle.setText(getString(R.string.label_no_pack));
+        }
+
+        // My Projects count
+        int sessionCount = RecentSessionStore.get(requireContext()).all().size();
+        quickProjectsSubtitle.setText(sessionCount == 1
+                ? getString(R.string.format_one_session)
+                : getString(R.string.format_sessions, sessionCount));
+    }
+
+    private void bindActiveLanguage() {
+        LessonPack pack = LessonRepository.getActivePack(requireContext());
+        if (pack != null && pack.language != null && !pack.language.isEmpty()) {
+            activeLanguageName.setText(pack.language);
+        } else {
+            activeLanguageName.setText("Java");
+        }
     }
 
     private void bindContinueLearning() {
@@ -108,7 +163,6 @@ public class HomeFragment extends Fragment {
         continuePackTitle.setText(pack.title);
 
         ProgressStore progress = ProgressStore.get(requireContext());
-        // Find next lesson: first not-completed, fallback to last
         Lesson next = pack.lessons.get(pack.lessons.size() - 1);
         for (Lesson l : pack.lessons) {
             if (!progress.isCompleted(pack.id, l.index)) { next = l; break; }

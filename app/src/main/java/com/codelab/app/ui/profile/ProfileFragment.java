@@ -64,7 +64,7 @@ public class ProfileFragment extends Fragment {
         v.findViewById(R.id.menuDeleteAccount).setOnClickListener(view -> confirmDeleteAccount());
 
         v.findViewById(R.id.menuNotifications).setOnClickListener(view ->
-                startActivity(new Intent(requireContext(), SettingsActivity.class)));
+                startActivity(new Intent(requireContext(), com.codelab.app.ui.notifications.NotificationsActivity.class)));
         v.findViewById(R.id.menuStorage).setOnClickListener(view -> showStorageDialog());
         v.findViewById(R.id.menuAbout).setOnClickListener(view -> showAboutDialog());
 

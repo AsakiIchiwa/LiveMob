@@ -76,5 +76,13 @@
         <activity android:name=".ui.settings.SettingsActivity"
             android:exported="false" android:label="@string/title_settings"
             android:parentActivityName=".ui.MainActivity"/>
+
+        <activity android:name=".ui.notifications.NotificationsActivity"
+            android:exported="false" android:label="@string/title_notifications"
+            android:parentActivityName=".ui.MainActivity"/>
+
+        <activity android:name=".ui.projects.ProjectsActivity"
+            android:exported="false" android:label="@string/title_my_projects"
+            android:parentActivityName=".ui.MainActivity"/>
     </application>
 </manifest>

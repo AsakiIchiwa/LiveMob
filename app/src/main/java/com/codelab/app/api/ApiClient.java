@@ -116,8 +116,15 @@ public final class ApiClient {
                             .addInterceptor(chain -> {
                                 Request original = chain.request();
 
-                                String token = SettingsStore.get(ctx).accessToken();
-                                if (!original.url().encodedPath().contains("/auth/")) {
+                                String token;
+                                String path = original.url().encodedPath();
+                                // Skip token refresh only for login/register/refresh endpoints,
+                                // but NOT for /auth/me which requires a valid token.
+                                boolean isPublicAuth = path.contains("/auth/")
+                                        && !path.endsWith("/auth/me");
+                                if (isPublicAuth) {
+                                    token = SettingsStore.get(ctx).accessToken();
+                                } else {
                                     token = ensureAccessToken(ctx);
                                 }
 

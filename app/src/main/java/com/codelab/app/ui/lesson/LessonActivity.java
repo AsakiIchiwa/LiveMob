@@ -191,6 +191,11 @@ public class LessonActivity extends AppCompatActivity {
                 ProfileStore.get(this).awardXp(lesson.xpReward, true);
                 Toast.makeText(this, "Lesson complete! +" + lesson.xpReward + " XP",
                         Toast.LENGTH_LONG).show();
+                com.codelab.app.data.NotificationStore.get(this).add(
+                        new com.codelab.app.data.AppNotification(
+                                com.codelab.app.data.AppNotification.Type.LESSON,
+                                getString(R.string.notif_lesson_completed),
+                                getString(R.string.notif_lesson_completed_body, lesson.title, lesson.xpReward)));
             }
         } else if (isSubmit && ranOK) {
             label = "Output didn't match expected";

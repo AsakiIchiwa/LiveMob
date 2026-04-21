@@ -82,4 +82,26 @@
     <string name="achievement_streak_7_desc">7-day learning streak</string>
     <string name="achievement_polyglot">Polyglot</string>
     <string name="achievement_polyglot_desc">Install a second pack</string>
+
+    <string name="title_notifications">Notifications</string>
+    <string name="action_mark_all_read">Mark all read</string>
+    <string name="empty_notifications">No notifications yet.\nComplete lessons and run code to earn achievements!</string>
+    <string name="notif_lesson_completed">Lesson Completed!</string>
+    <string name="notif_lesson_completed_body">You finished \"%1$s\" and earned %2$d XP.</string>
+    <string name="notif_code_executed">Code Executed Successfully</string>
+    <string name="notif_code_executed_body">Your %1$s code ran without errors.</string>
+    <string name="label_playground">Playground</string>
+    <string name="label_free_coding">Free coding</string>
+    <string name="label_study_mode">Study Mode</string>
+    <string name="label_manage_downloads">Manage Downloads</string>
+    <string name="label_my_projects">My Projects</string>
+    <string name="label_active_language">Active language</string>
+    <string name="label_built_in">Built-in</string>
+    <string name="format_sessions">%1$d sessions</string>
+    <string name="format_one_session">1 session</string>
+    <string name="format_installed">%1$d installed</string>
+    <string name="format_one_installed">1 installed</string>
+    <string name="format_study_progress">%1$d / %2$d done</string>
+    <string name="label_no_pack">No pack</string>
+    <string name="title_my_projects">My Projects</string>
 </resources>

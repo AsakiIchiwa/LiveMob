@@ -234,6 +234,13 @@ public class PlaygroundActivity extends AppCompatActivity {
                 renderOutput(r);
                 persistLocal();
                 btnRun.setEnabled(true);
+                if (r != null && r.exitCode != null && r.exitCode == 0) {
+                    com.codelab.app.data.NotificationStore.get(PlaygroundActivity.this).add(
+                            new com.codelab.app.data.AppNotification(
+                                    com.codelab.app.data.AppNotification.Type.SESSION,
+                                    getString(R.string.notif_code_executed),
+                                    getString(R.string.notif_code_executed_body, currentLanguage)));
+                }
             }
             @Override public void onError(String message) {
                 setStatus("Error", Color.parseColor("#F87171"));

@@ -53,9 +53,13 @@
                 android:gravity="center_vertical">
 
                 <FrameLayout
+                    android:id="@+id/btnNotification"
                     android:layout_width="34dp"
                     android:layout_height="34dp"
                     android:background="@drawable/bg_card"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:layout_marginEnd="9dp">
                     <ImageView
                         android:layout_width="15dp"
@@ -70,6 +74,9 @@
                     android:layout_width="34dp"
                     android:layout_height="34dp"
                     android:background="@drawable/bg_circle_accent"
+                    android:foreground="?attr/selectableItemBackground"
+                    android:clickable="true"
+                    android:focusable="true"
                     android:gravity="center"
                     android:text="A"
                     android:textColor="@color/accent"
@@ -112,7 +119,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Playground"
+                    android:text="@string/label_playground"
                     android:textColor="@color/text_primary"
                     android:textSize="13sp"
                     android:textStyle="bold" />
@@ -120,7 +127,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="Free coding"
+                    android:text="@string/label_free_coding"
                     android:textColor="@color/text_secondary"
                     android:textSize="11sp" />
             </LinearLayout>
@@ -147,15 +154,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Study Mode"
+                    android:text="@string/label_study_mode"
                     android:textColor="@color/text_primary"
                     android:textSize="13sp"
                     android:textStyle="bold" />
                 <TextView
+                    android:id="@+id/quickStudySubtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="8 / 12 done"
+                    android:text="0 / 0 done"
                     android:textColor="@color/text_secondary"
                     android:textSize="11sp" />
             </LinearLayout>
@@ -182,7 +190,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="Manage Downloads"
+                    android:text="@string/label_manage_downloads"
                     android:textColor="@color/text_primary"
                     android:textSize="13sp"
                     android:textStyle="bold" />
@@ -198,6 +206,7 @@
 
             <!-- My Projects -->
             <LinearLayout
+                android:id="@+id/quickProjects"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_columnWeight="1"
@@ -217,15 +226,16 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="10dp"
-                    android:text="My Projects"
+                    android:text="@string/label_my_projects"
                     android:textColor="@color/text_primary"
                     android:textSize="13sp"
                     android:textStyle="bold" />
                 <TextView
+                    android:id="@+id/quickProjectsSubtitle"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="2dp"
-                    android:text="4 sessions"
+                    android:text="0 sessions"
                     android:textColor="@color/text_secondary"
                     android:textSize="11sp" />
             </LinearLayout>
@@ -234,10 +244,14 @@
 
         <!-- Active language -->
         <LinearLayout
+            android:id="@+id/activeLanguageCard"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:background="@drawable/bg_card"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?attr/selectableItemBackground"
             android:gravity="center_vertical"
             android:padding="14dp">
             <TextView
@@ -257,11 +271,12 @@
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Active language"
+                    android:text="@string/label_active_language"
                     android:textColor="@color/text_secondary"
                     android:textSize="12sp"
                     android:textStyle="bold" />
                 <TextView
+                    android:id="@+id/activeLanguageName"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Java"
@@ -276,7 +291,7 @@
                 android:backgroundTint="#1A00E5FF"
                 android:paddingHorizontal="8dp"
                 android:paddingVertical="2dp"
-                android:text="Built-in"
+                android:text="@string/label_built_in"
                 android:textColor="@color/accent"
                 android:textSize="11sp"
                 android:textStyle="bold" />
@@ -399,11 +414,14 @@
                 android:textStyle="bold"
                 android:letterSpacing="0.06"/>
             <TextView
+                android:id="@+id/recentSeeAll"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="See all"
                 android:textColor="@color/accent"
-                android:textSize="12sp" />
+                android:textSize="12sp"
+                android:clickable="true"
+                android:focusable="true" />
         </LinearLayout>
 
         <androidx.recyclerview.widget.RecyclerView
