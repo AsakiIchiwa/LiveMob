@@ -100,17 +100,18 @@ public final class AuthManager {
         } catch (Exception ignored) {}
     }
 
-    /** Clears local tokens + profile + recent sessions so the next launch goes to Login. */
+    /** Clears local tokens + profile so the next launch goes to Login. */
     public static void logout(Context ctx) {
-        // Best-effort revoke remotely; don't block on failure.
-        try {
-            ApiClient.get(ctx).logout().execute();
-        } catch (Exception ignored) {}
-
+        // Clear local tokens FIRST so even if remote revoke fails, user is logged out.
         SettingsStore store = SettingsStore.get(ctx);
         store.setAccessToken(null);
         store.setRefreshToken(null);
         ProfileStore.get(ctx).clear();
         ApiClient.invalidate();
+
+        // Best-effort revoke remotely; don't block on failure.
+        try {
+            ApiClient.get(ctx).logout().execute();
+        } catch (Exception ignored) {}
     }
 }

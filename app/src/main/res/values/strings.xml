@@ -109,4 +109,6 @@
     <string name="action_new_file">New File</string>
     <string name="confirm_delete_project">Delete \"%1$s\"? This cannot be undone.</string>
     <string name="confirm_delete_file">Delete file \"%1$s\"?</string>
+    <string name="confirm_bulk_delete">Delete %1$d selected projects? This cannot be undone.</string>
+    <string name="action_select_all">Select all</string>
 </resources>
