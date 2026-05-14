@@ -3,6 +3,7 @@ package com.codelab.app.ui;
 import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
@@ -21,6 +22,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.codelab.app.R;
 import com.codelab.app.api.dto.ExecutionResponse;
 import com.codelab.app.data.ProfileStore;
+import com.codelab.app.ui.tools.CodeExplainActivity;
+import com.codelab.app.ui.tools.CodeInsightEngine;
+import com.codelab.app.ui.tools.CodeScannerActivity;
 import com.codelab.app.data.RecentSession;
 import com.codelab.app.data.RecentSessionStore;
 import com.codelab.app.data.SettingsStore;
@@ -32,6 +36,8 @@ import java.util.List;
 public class PlaygroundActivity extends AppCompatActivity {
 
     public static final String EXTRA_SESSION_ID = "session_id";
+    public static final String EXTRA_IMPORTED_CODE = "imported_code";
+    public static final String EXTRA_IMPORTED_SOURCE = "imported_source";
 
     private static final String DEFAULT_CODE_JAVA =
             "public class Main {\n" +
@@ -94,7 +100,14 @@ public class PlaygroundActivity extends AppCompatActivity {
                 projectFiles = new ArrayList<>(s.getFiles());
             }
         }
-        if (projectFiles.isEmpty()) {
+        String importedCode = getIntent().getStringExtra(EXTRA_IMPORTED_CODE);
+        if (!TextUtils.isEmpty(importedCode)) {
+            projectFiles.clear();
+            String preparedCode = CodeInsightEngine.normalizeScannedCode(importedCode);
+            projectFiles.add(new RecentSession.ProjectFile(
+                    defaultFilename(currentLanguage), preparedCode));
+            currentSessionId = null;
+        } else if (projectFiles.isEmpty()) {
             projectFiles.add(new RecentSession.ProjectFile(
                     defaultFilename(currentLanguage), defaultCode(currentLanguage)));
         }
@@ -155,6 +168,13 @@ public class PlaygroundActivity extends AppCompatActivity {
         findViewById(R.id.btnFolder).setOnClickListener(v -> {
             explorerAdapter.update(projectFiles, activeFileIndex);
             drawerLayout.openDrawer(explorerDrawer);
+        });
+        findViewById(R.id.btnScanCode).setOnClickListener(v ->
+                startActivity(new Intent(this, CodeScannerActivity.class)));
+        findViewById(R.id.btnExplainCode).setOnClickListener(v -> {
+            Intent intent = new Intent(this, CodeExplainActivity.class);
+            intent.putExtra(Intent.EXTRA_TEXT, editor.getText().toString());
+            startActivity(intent);
         });
 
         // File tab "+" — add new file

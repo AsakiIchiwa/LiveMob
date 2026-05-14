@@ -1,4 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="splash_quote">Kẻ mạnh không phàn nàn về môi trường</string>
+    <string name="title_code_scanner">Quét code</string>
+    <string name="title_code_explain">Giải thích code</string>
+    <string name="action_rescan">Quét lại</string>
+    <string name="action_scan">Quét</string>
+    <string name="action_explain">Giải thích</string>
+    <string name="action_use_in_sandbox">Dùng trong sandbox</string>
+    <string name="action_upload_image">Tải ảnh lên</string>
+    <string name="action_clear">Xóa</string>
+    <string name="action_paste_sample">Dán ví dụ</string>
+    <string name="action_explain_code">Giải thích code</string>
+    <string name="code_scanner_hint">Đưa camera về phía đoạn code trên màn hình hoặc giấy. Khi nội dung đúng, nhấn Dùng trong sandbox.</string>
+    <string name="code_scanner_upload_hint">Tải ảnh từ thiết bị lên để quét code.</string>
+    <string name="code_scanner_scanning">Đang quét code…</string>
+    <string name="code_scanner_processing">Đang xử lý ảnh đã tải lên…</string>
+    <string name="code_scanner_detected_title">Code đã nhận diện</string>
+    <string name="code_scanner_review_prompt">Kiểm tra nội dung đã quét. Nếu đúng, tiếp tục sang sandbox.</string>
+    <string name="code_scanner_no_code_found">Chưa tìm thấy đoạn code nào đủ rõ.</string>
+    <string name="code_scanner_scan_failed">Không đọc được khung hình hiện tại. Hãy giữ máy ổn định hơn.</string>
+    <string name="code_scanner_permission_denied">Cần quyền camera để quét code.</string>
+    <string name="code_scanner_camera_error">Không thể khởi động camera.</string>
+    <string name="code_explain_intro">Dán một function hoặc class để nhận phần giải thích nhanh về tác dụng của nó.</string>
+    <string name="code_explain_hint">Dán function, class hoặc đoạn code vào đây…</string>
+    <string name="code_explain_empty_title">Sẵn sàng giải thích</string>
+    <string name="code_explain_empty_body">Dán code ở phía trên rồi nhấn Giải thích code để tạo phần tóm tắt dễ hiểu cho người học và người review.</string>
+    <string name="code_explain_empty_input">Hãy dán code trước.</string>
+    <string name="code_explain_counter">%1$d ký tự</string>
 </resources>

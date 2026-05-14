@@ -91,6 +91,36 @@
                 android:layout_marginStart="4dp"
                 android:clickable="true"
                 android:focusable="true"/>
+
+            <TextView
+                android:id="@+id/btnScanCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:background="@drawable/bg_pill_outline"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:text="@string/action_scan"
+                android:textColor="@color/text_primary"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"/>
+
+            <TextView
+                android:id="@+id/btnExplainCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="6dp"
+                android:background="@drawable/bg_pill_outline"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="4dp"
+                android:text="@string/action_explain"
+                android:textColor="@color/text_primary"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:clickable="true"
+                android:focusable="true"/>
         </LinearLayout>
 
         <!-- File tabs row -->
